@@ -1,0 +1,53 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <style name="popwin_anim_style">
+        <item name="android:windowEnterAnimation">@anim/popup_enter</item>
+        <item name="android:windowExitAnimation">@anim/popup_exit</item>
+    </style>
+
+
+
+
+    <style name="BaseDialog" parent="@android:style/Theme.Dialog">
+        <item name="android:windowFrame">@null</item>
+        <!--边框-->
+        <item name="android:windowNoTitle">true</item>
+        <!--无标题-->
+        <item name="android:windowIsFloating">true</item>
+        <!--是否浮现在activity之上-->
+        <item name="android:windowContentOverlay">@null</item>
+        <!-- 对话框是否有遮盖 -->
+        <item name="android:windowIsTranslucent">false</item>
+        <!--半透明-->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--背景透明-->
+        <item name="android:backgroundDimEnabled">false</item>
+        <!--背景模糊-->
+    </style>
+
+
+    <style name="dialog_loading" parent="BaseDialog">
+        <item name="android:backgroundDimAmount">0.6</item>
+        <!-- 灰度 -->
+        <item name="android:windowAnimationStyle">@style/LoadAnimation</item>
+        <!-- 弹出或者进入时的动画效果 -->
+    </style>
+
+
+    <style name="LoadAnimation" parent="android:Animation">
+        <item name="android:windowEnterAnimation">@anim/dialog_load_enter</item>
+        <item name="android:windowExitAnimation">@anim/dialog_load_exit</item>
+    </style>
+
+
+
+</resources>

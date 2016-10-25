@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_login"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".function.login.LoginActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/y150"
+        android:gravity="center"
+        android:orientation="horizontal">
+
+        <com.shine.mobilenurse.view.LogoAndTextView
+            android:id="@+id/rfid_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:orientation="horizontal"
+            app:text="@string/rfid_login"
+            app:textColor="@color/color_C07733"
+            app:textSize="9" />
+
+
+        <com.shine.mobilenurse.view.LogoAndTextView
+            android:id="@+id/scan_login"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x50"
+            android:onClick="scanLogin"
+            app:orientation="horizontal"
+            app:text="@string/scan_login"
+            app:textColor="@color/color_C07733"
+            app:textSize="9" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x40"
+        android:layout_marginRight="@dimen/x40"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/login_username"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30"
+            android:background="@drawable/login_edit_bg"
+            android:drawableLeft="@mipmap/ic_launcher"
+            android:gravity="left|center_vertical"
+            android:paddingBottom="@dimen/y5"
+            android:paddingLeft="@dimen/x20"
+            android:paddingTop="@dimen/y5" />
+
+        <EditText
+            android:id="@+id/login_pwd"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30"
+            android:background="@drawable/login_edit_bg"
+            android:drawableLeft="@mipmap/ic_launcher"
+            android:gravity="left|center_vertical"
+            android:paddingBottom="@dimen/y5"
+            android:paddingLeft="@dimen/x20"
+            android:paddingTop="@dimen/y5" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/y30"
+            android:background="@drawable/login_edit_bg"
+            android:drawableLeft="@mipmap/ic_launcher"
+            android:drawableRight="@mipmap/ic_launcher"
+            android:gravity="center"
+            android:text="心血管内科护理单元"
+            android:paddingBottom="@dimen/y5"
+            android:paddingLeft="@dimen/x20"
+            android:paddingRight="@dimen/x20"
+            android:paddingTop="@dimen/y5" />
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:id="@+id/login_agree"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="@dimen/x80"
+            android:layout_marginTop="@dimen/y30"
+            android:drawableLeft="@mipmap/ic_launcher"
+            android:drawablePadding="@dimen/x10"
+            android:gravity="center"
+            android:text="@string/agree"
+            android:textSize="@dimen/text_size_17" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/login_agree"
+            android:layout_marginLeft="@dimen/x5"
+            android:layout_toRightOf="@+id/login_agree"
+            android:drawablePadding="@dimen/x10"
+            android:text="@string/xieyi"
+            android:textSize="@dimen/text_size_17" />
+
+
+    </RelativeLayout>
+
+
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x40"
+        android:layout_marginRight="@dimen/x40"
+        android:layout_marginTop="@dimen/y60"
+        android:background="@drawable/login_bg"
+        android:onClick="login"
+        android:text="@string/login"
+        android:textColor="@color/colorWhite"
+        android:textSize="@dimen/text_size_17" />
+
+
+</LinearLayout>

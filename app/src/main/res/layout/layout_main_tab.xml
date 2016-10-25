@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/colorWhite"
+    android:orientation="horizontal">
+
+
+    <com.shine.mobilenurse.view.LogoAndTextView
+        android:id="@+id/main_tab_0"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:src="@mipmap/ic_launcher"
+        app:text="@string/home_page" />
+
+    <com.shine.mobilenurse.view.LogoAndTextView
+        android:id="@+id/main_tab_1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:src="@mipmap/ic_launcher"
+        app:text="@string/ward_choose" />
+
+    <com.shine.mobilenurse.view.LogoAndTextView
+        android:id="@+id/main_tab_2"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:src="@mipmap/ic_launcher"
+        app:text="@string/patient_choose" />
+
+    <com.shine.mobilenurse.view.LogoAndTextView
+        android:id="@+id/main_tab_3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        app:src="@mipmap/ic_launcher"
+        app:text="@string/exit" />
+
+</LinearLayout>
+
+
+

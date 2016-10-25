@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">移动护士站</string>
+
+    <!--dialog-->
+    <string name="progress_loading">加载中\.\.\.</string>
+
+    <!--扫描-->
+    <string name="scan_success_loading">扫描成功,加载中\.\.\.</string>
+    <string name="scan_failed_message">请在10秒内完成扫码,也有可能是条形码错误!</string>
+    <string name="scan_failed_title">扫描失败</string>
+
+    <!--Toast-->
+    <string name="toast_app_exit_for_double">在按一次退出</string>
+
+    <!--登陆页面-->
+    <string name="scan_login">二维码登陆</string>
+
+    <!--公用-->
+    <string name="btn_ok">确定</string>
+    <string name="btn_cancel">取消</string>
+    <string name="btn_back">返回</string>
+    <string name="rfid_login">RFID登陆</string>
+    <string name="agree">同意</string>
+    <string name="xieyi">和佳移动护理app协议</string>
+    <string name="login">登陆</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="home_page">首页</string>
+    <string name="ward_choose">病区选择</string>
+    <string name="patient_choose">病人选择</string>
+    <string name="exit">退出</string>
+    <string name="I_focus_on">我关注</string>
+    <string name="all">全部</string>
+    <string name="new_">新</string>
+    <string name="hot_">热</string>
+    <string name="pu">普</string>
+    <string name="two_">二级</string>
+
+</resources>

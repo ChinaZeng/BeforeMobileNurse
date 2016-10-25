@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/item_main_pop_recy_root"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/y10"
+    android:paddingTop="@dimen/y10">
+
+
+    <TextView
+        android:id="@+id/item_main_pop_recy_num"
+        android:layout_width="@dimen/x50"
+        android:layout_height="@dimen/x50"
+        android:layout_gravity="center_horizontal"
+        android:background="@drawable/cho_before_round_bg"
+        android:gravity="center"
+        android:text="20"
+        android:textColor="@color/colorWhite" />
+
+    <ImageView
+        android:id="@+id/item_main_pop_recy_image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@mipmap/ic_launcher" />
+
+    <TextView
+        android:id="@+id/item_main_pop_recy_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="张晓梅" />
+
+
+</LinearLayout>

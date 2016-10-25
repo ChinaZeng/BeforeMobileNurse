@@ -1,0 +1,29 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/color_ecf0f0"
+    android:orientation="vertical"
+    tools:context=".function.options.OptionsFragment">
+
+    <include layout="@layout/layout_t" />
+
+    <LinearLayout
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/x15"
+        android:paddingRight="@dimen/x15">
+
+        <include layout="@layout/layout_op_top" />
+
+        <include layout="@layout/layout_op_mid_0" />
+
+        <include layout="@layout/layout_op_mid_1" />
+
+        <include layout="@layout/layout_op_bottom" />
+    </LinearLayout>
+
+
+</LinearLayout>

@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/x5"
+    android:layout_marginRight="@dimen/x5"
+    android:background="@android:color/transparent"
+    android:orientation="vertical">
+
+    <ImageView
+        android:id="@+id/pup_out"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+
+        android:layout_gravity="center_horizontal"
+        android:src="@mipmap/ic_launcher" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/x20"
+        android:layout_marginRight="@dimen/x20"
+        android:background="@drawable/pup_bg"
+        android:orientation="vertical">
+
+        <com.shine.mobilenurse.view.HorCenterRecyclerView
+            android:id="@+id/pup_recy_beds"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+
+        <com.shine.mobilenurse.view.HorCenterRecyclerView
+            android:id="@+id/pup_recy_"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </LinearLayout>
+
+
+</LinearLayout>

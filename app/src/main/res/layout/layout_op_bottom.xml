@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/y25"
+    android:background="@color/colorWhite"
+    android:gravity="center"
+    android:orientation="horizontal">
+
+    <com.shine.mobilenurse.view.LogoAndTextView
+        android:id="@+id/op_bottom_0"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="1" />
+
+    <View
+        android:layout_width="1px"
+        android:layout_height="@dimen/y96"
+        android:background="@color/color_797979"
+        android:gravity="center" />
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="2"
+        android:orientation="horizontal">
+
+        <com.shine.mobilenurse.view.LogoAndTextView
+            android:id="@+id/op_bottom_1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+
+        <com.shine.mobilenurse.view.LogoAndTextView
+            android:id="@+id/op_bottom_2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1" />
+
+
+    </LinearLayout>
+
+
+</LinearLayout>
