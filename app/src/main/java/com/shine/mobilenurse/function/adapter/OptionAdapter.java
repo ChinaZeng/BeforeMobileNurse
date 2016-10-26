@@ -24,19 +24,23 @@ import java.util.List;
 
 public class OptionAdapter extends BaseRecyAdapter<Option> {
 
-    public final static int CHILD_W_MATCH=0;
-    public final static int CHILD_W_WARP=1;
+    public final static int CHILD_W_MATCH = 0;
+    public final static int CHILD_W_WARP = 1;
 
+    /**
+     * item宽度是match还是wrap
+     */
     private int type;
+
 
     public OptionAdapter(Activity context) {
         super(context);
-        type=CHILD_W_MATCH;
+        type = CHILD_W_MATCH;
     }
 
-    public OptionAdapter(Activity context,int type) {
+    public OptionAdapter(Activity context, int type) {
         super(context);
-        this.type=type;
+        this.type = type;
     }
 
     @Override
@@ -60,6 +64,8 @@ public class OptionAdapter extends BaseRecyAdapter<Option> {
         return new OptionViewHolder(LayoutInflater.from(context).inflate(R.layout.item_options, parent, false));
     }
 
+
+
     class OptionViewHolder extends RecyclerView.ViewHolder {
 
         private LogoAndTextView TImageBTextView;
@@ -67,9 +73,9 @@ public class OptionAdapter extends BaseRecyAdapter<Option> {
         public OptionViewHolder(View itemView) {
             super(itemView);
             TImageBTextView = (LogoAndTextView) itemView.findViewById(R.id.item_op_mid_0_root);
-            if(type==CHILD_W_MATCH){
+            if (type == CHILD_W_MATCH) {
                 TImageBTextView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
-            }else {
+            } else {
                 TImageBTextView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
         }

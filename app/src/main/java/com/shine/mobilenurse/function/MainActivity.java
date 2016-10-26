@@ -79,6 +79,7 @@ public class MainActivity extends BaseActivity {
     private int popViewHeight;
 
     private PopBedsAdapter bedsAdapter;
+    private RecyclerView recyclerViewBeds;
 
 //    private Fragment accountFragment, assessFragment, bedsFragment,
 //            bloodFragment, callFragment, checkResultFragment, doctorAdviceFragment,
@@ -113,7 +114,7 @@ public class MainActivity extends BaseActivity {
      *
      * @param activity 需要设置的activity
      */
-    public  void setTranslucent(Activity activity) {
+    public void setTranslucent(Activity activity) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
             // 设置状态栏透明
             activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -398,6 +399,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.main_tab_3:
                 selectionTab(3);
+
                 break;
             case R.id.pup_into:
                 showPopToViewTop(line);
@@ -411,7 +413,60 @@ public class MainActivity extends BaseActivity {
         }
     }
 
+    /**
+     * 选择床位
+     *
+     * @param pos
+     */
+    private void chooseBeds(int pos) {
+        if (bedsAdapter.chooseBeds(pos)) {
+            recyclerViewBeds.smoothScrollToPosition(comPos(pos, bedsAdapter.getOldPos()));
+        }
+    }
 
+
+    /**
+     * 计算床位跳转的位置
+     *
+     * @param pos 当前位置
+     * @param old 原来位置
+     * @return
+     */
+    private int comPos(int pos, int old) {
+
+        int a = 0;
+
+        //1.recy宽度
+        int recyW = recyclerViewBeds.getWidth();
+        //2.item总长度
+        int itemLen = 0;
+        for (int i = 0; i < recyclerViewBeds.getChildCount(); i++) {
+            itemLen += recyclerViewBeds.getChildAt(i).getWidth();
+        }
+        //3.item的宽度
+        int itemW = itemLen / recyclerViewBeds.getChildCount();
+        //4.recy界面里面显示可见多少个item
+        int rCount = recyW / itemW;
+
+        if (pos <= rCount / 2) {
+            a = 0;
+        } else if (pos < bedsAdapter.getItemCount() - rCount / 2) {
+            if (pos > old) {
+                a = pos + rCount / 2;
+            } else {
+                a = pos - rCount / 2;
+            }
+        } else if (pos >= bedsAdapter.getItemCount() - rCount / 2) {
+            a = bedsAdapter.getItemCount() - rCount / 2;
+        }
+        return a;
+    }
+
+    /**
+     * 在指定View上方显示popWindow
+     *
+     * @param v
+     */
     private void showPopToViewTop(View v) {
         int[] location = new int[2];
         v.getLocationOnScreen(location);
@@ -454,11 +509,15 @@ public class MainActivity extends BaseActivity {
         return opData;
     }
 
+
+    /**
+     * 初始化popwindow
+     */
     private void initPop() {
         View view = LayoutInflater.from(this).inflate(R.layout.layout_main_pup, null);
         view.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
 
-        RecyclerView recyclerViewBeds = ViewUtil.$(view, R.id.pup_recy_beds);
+        recyclerViewBeds = ViewUtil.$(view, R.id.pup_recy_beds);
         recyclerViewBeds.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
         bedsAdapter = new PopBedsAdapter(this);
         recyclerViewBeds.setAdapter(bedsAdapter);
@@ -466,19 +525,23 @@ public class MainActivity extends BaseActivity {
         recyclerViewBeds.addOnItemTouchListener(new RecyclerItemClickListener(this) {
             @Override
             protected void onItemClick(View view, int position) {
-                UI.showToast(MainActivity.this, bedsAdapter.getItem(position).getName());
+                chooseBeds(position);
             }
         });
 
         RecyclerView recyclerView_ = ViewUtil.$(view, R.id.pup_recy_);
         recyclerView_.setLayoutManager(new StaggeredGridLayoutManager(1, StaggeredGridLayoutManager.HORIZONTAL));
-        final OptionAdapter adapter = new OptionAdapter(this,OptionAdapter.CHILD_W_WARP);
+        final OptionAdapter adapter = new OptionAdapter(this, OptionAdapter.CHILD_W_WARP);
         recyclerView_.setAdapter(adapter);
         adapter.addItems(addOptionData());
         recyclerView_.addOnItemTouchListener(new RecyclerItemClickListener(this) {
             @Override
             protected void onItemClick(View view, int position) {
-                UI.showToast(MainActivity.this, adapter.getItem(position).getName());
+                if (adapter.getItem(position).getTag().equals("hot"))
+                    chooseBeds(14);
+                else {
+                    chooseBeds(5);
+                }
             }
         });
 
@@ -518,7 +581,11 @@ public class MainActivity extends BaseActivity {
 
     }
 
-
+    /**
+     * 选择下方tab
+     *
+     * @param index
+     */
     private void selectionTab(int index) {
 
         //快速点击返回

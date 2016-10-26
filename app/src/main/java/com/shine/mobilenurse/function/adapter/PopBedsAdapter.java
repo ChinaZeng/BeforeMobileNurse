@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.shine.mobilenurse.R;
 import com.shine.mobilenurse.base.BaseRecyAdapter;
 import com.shine.mobilenurse.entity.Beds;
+import com.shine.mobilenurse.utils.LogPrint;
 import com.shine.mobilenurse.utils.ViewUtil;
 
 
@@ -22,16 +23,8 @@ import com.shine.mobilenurse.utils.ViewUtil;
 public class PopBedsAdapter extends BaseRecyAdapter<Beds> {
 
 
-//    private OnPopBedsClickListener listener;
-//
-//    public interface OnPopBedsClickListener {
-//        void optionClick(Beds bean, int pos);
-//    }
-//
-//    public void setOptionClickListener(OnPopBedsClickListener listener) {
-//        this.listener = listener;
-//    }
-
+    private int choPos = 0;
+    private int oldPos = 0;
 
     public PopBedsAdapter(Activity context) {
         super(context);
@@ -50,7 +43,31 @@ public class PopBedsAdapter extends BaseRecyAdapter<Beds> {
             final Beds beds = mData.get(position);
             mHolder.numText.setText(beds.getBedNum() + "");
             mHolder.nameText.setText(beds.getName());
+
+            //选中
+            if (this.choPos == position) {
+                mHolder.numText.setBackgroundResource(R.drawable.choed_round_bg);
+                mHolder.imageView.setImageResource(R.mipmap.ic_launcher);
+            } else {
+                mHolder.numText.setBackgroundResource(R.drawable.cho_before_round_bg);
+                mHolder.imageView.setImageResource(R.mipmap.ic_launcher);
+            }
+
         }
+    }
+
+    public boolean chooseBeds(int newPos) {
+        if (choPos == newPos && newPos > mData.size() && newPos >= 0)
+            return false;
+        this.oldPos = choPos;
+        this.choPos = newPos;
+        notifyItemChanged(oldPos);
+        notifyItemChanged(newPos);
+        return true;
+    }
+
+    public int getOldPos() {
+        return oldPos;
     }
 
     @Override
@@ -63,14 +80,12 @@ public class PopBedsAdapter extends BaseRecyAdapter<Beds> {
 
         private TextView numText, nameText;
         private ImageView imageView;
-        private View root;
 
         public PopBedsAdapterViewHolder(View itemView) {
             super(itemView);
             imageView = ViewUtil.$(itemView, R.id.item_main_pop_recy_image);
             numText = ViewUtil.$(itemView, R.id.item_main_pop_recy_num);
             nameText = ViewUtil.$(itemView, R.id.item_main_pop_recy_name);
-            root = ViewUtil.$(itemView, R.id.item_main_pop_recy_root);
         }
     }
 
