@@ -8,7 +8,7 @@ package com.shine.mobilenurse.entity;
 public class Option extends BaseEntity {
 
     private String name;
-    private String tag;
+    private String teg;
     private int type;
 
     public Option() {
@@ -17,12 +17,12 @@ public class Option extends BaseEntity {
 
     /**
      * @param name
-     * @param tag
+     * @param teg
      * @param type 0表示竖直  1表示水平
      */
-    public Option(String name, String tag, int type) {
+    public Option(String name, String teg, int type) {
         this.name = name;
-        this.tag = tag;
+        this.teg = teg;
         this.type = type;
     }
 
@@ -44,11 +44,11 @@ public class Option extends BaseEntity {
         this.name = name;
     }
 
-    public String getTag() {
-        return tag;
+    public String getTeg() {
+        return teg;
     }
 
-    public void setTag(String tag) {
-        this.tag = tag;
+    public void setTeg(String teg) {
+        this.teg = teg;
     }
 }

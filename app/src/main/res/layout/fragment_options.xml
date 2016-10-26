@@ -20,6 +20,14 @@
 
         <include layout="@layout/layout_op_mid_0" />
 
+        <!--<GridView-->
+            <!--android:id="@+id/gridView"-->
+            <!--android:background="@color/colorWhite"-->
+            <!--android:numColumns="4"-->
+            <!--android:layout_marginTop="@dimen/y22"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:layout_width="match_parent"/>-->
+
         <include layout="@layout/layout_op_mid_1" />
 
         <include layout="@layout/layout_op_bottom" />

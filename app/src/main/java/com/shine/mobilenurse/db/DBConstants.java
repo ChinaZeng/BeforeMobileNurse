@@ -15,7 +15,7 @@ public class DBConstants {
     public static final String SQL_OPTION = "CREATE TABLE IF NOT EXISTS Option(" +
             "LOGOID INTEGER," +//对应logoID
             "NAME TEXT," +//提示名字
-            "TAG TEXT," +//对应的TAG 为对应的Fragment的包名.类名
+            "TEG TEXT," +//对应的TAG 为对应的Fragment的包名.类名
             "TYPE INTEGER);";//当前显示的类型 0顶部 1中间上部分 2中间下部分 3.底部部分 4不显示
 
 

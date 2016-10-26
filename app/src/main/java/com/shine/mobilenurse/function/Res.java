@@ -33,47 +33,47 @@ import com.shine.mobilenurse.function.temperature.TemperatureFragment;
 
 public class Res {
 
-    public static Drawable getDrawByTag(Context context, String tag) {
+    public static Drawable getDrawByTag(Context context, String teg) {
         int id = R.mipmap.ic_launcher;
-        if (tag.equals(OptionsFragment.class.getName())) {
+        if (teg.equals(OptionsFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(AccountFragment.class.getName())) {
+        } else if (teg.equals(AccountFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(AssessFragment.class.getName())) {
+        } else if (teg.equals(AssessFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(BedsFragment.class.getName())) {
+        } else if (teg.equals(BedsFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(BloodFragment.class.getName())) {
+        } else if (teg.equals(BloodFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(CallFragment.class.getName())) {
+        } else if (teg.equals(CallFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(CheckResultFragment.class.getName())) {
+        } else if (teg.equals(CheckResultFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(DoctorAdviceFragment.class.getName())) {
+        } else if (teg.equals(DoctorAdviceFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(InfoQueryFragmeng.class.getName())) {
+        } else if (teg.equals(InfoQueryFragmeng.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(InspectionResultFragment.class.getName())) {
+        } else if (teg.equals(InspectionResultFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(MissionFragment.class.getName())) {
+        } else if (teg.equals(MissionFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(NoticeFragment.class.getName())) {
+        } else if (teg.equals(NoticeFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(NursingMeasuresFragment.class.getName())) {
+        } else if (teg.equals(NursingMeasuresFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(PatrolFragment.class.getName())) {
+        } else if (teg.equals(PatrolFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(PrintFragment.class.getName())) {
+        } else if (teg.equals(PrintFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(SignsFragment.class.getName())) {
+        } else if (teg.equals(SignsFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(SkinTestFragment.class.getName())) {
+        } else if (teg.equals(SkinTestFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(SpecimenFragment.class.getName())) {
+        } else if (teg.equals(SpecimenFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        } else if (tag.equals(TemperatureFragment.class.getName())) {
+        } else if (teg.equals(TemperatureFragment.class.getName())) {
             id = R.mipmap.ic_launcher;
-        }else if(tag.equals(CustomActivity.class.getName())){
+        }else if(teg.equals(CustomActivity.class.getName())){
             id = R.mipmap.ic_launcher;
         }
         return context.getResources().getDrawable(id);

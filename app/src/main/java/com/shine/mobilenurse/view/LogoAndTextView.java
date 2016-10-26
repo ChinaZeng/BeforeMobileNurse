@@ -21,19 +21,18 @@ import com.shine.mobilenurse.utils.TDUtils;
 
 public class LogoAndTextView extends LinearLayout {
 
-    private String tag;
+    private String teg;
     private int textColor;
     private String text;
     private int textSize;
     private Drawable src;
     private ImageView imageView;
     private TextView textView;
+    private Drawable background;
 
     private int type;
 
-
     private final int DEFAULT_TEXT_SIZE = 6;
-
 
     public LogoAndTextView(Context context) {
         this(context, null);
@@ -56,8 +55,11 @@ public class LogoAndTextView extends LinearLayout {
         text = a.getString(R.styleable.LogoAndTextView_text);
         textSize = TDUtils.sp2px(context, a.getInteger(R.styleable.LogoAndTextView_textSize, DEFAULT_TEXT_SIZE));
         src = a.getDrawable(R.styleable.LogoAndTextView_src);
-        tag = a.getString(R.styleable.LogoAndTextView_tag);
+        teg = a.getString(R.styleable.LogoAndTextView_tag);
         type = a.getInt(R.styleable.LogoAndTextView_orientation, 0);
+        background=a.getDrawable(R.styleable.LogoAndTextView_background);
+        if(background==null)
+            background=context.getResources().getDrawable(R.drawable.op_bg);
         a.recycle();
     }
 
@@ -67,7 +69,7 @@ public class LogoAndTextView extends LinearLayout {
 
         if (type == 0) {
             setOrientation(VERTICAL);
-
+            setBackgroundDrawable(background);
             LayoutParams rootparms = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
             setLayoutParams(rootparms);
 
@@ -97,6 +99,8 @@ public class LogoAndTextView extends LinearLayout {
         addView(view);
     }
 
+
+
     public void setTextColor(int color) {
         if (color != 0 && textView != null) {
             this.textColor = color;
@@ -105,13 +109,13 @@ public class LogoAndTextView extends LinearLayout {
 
     }
 
-    public void setTag(String tag) {
-        if (tag != null)
-            this.tag = tag;
+    public void setTeg(String teg) {
+        if (teg != null)
+            this.teg = teg;
     }
 
-    public String getTag() {
-        return this.tag;
+    public String getTeg() {
+        return this.teg;
     }
 
     public void setTextSize(int textSize) {
@@ -135,4 +139,5 @@ public class LogoAndTextView extends LinearLayout {
             textView.setText(text);
         }
     }
+
 }

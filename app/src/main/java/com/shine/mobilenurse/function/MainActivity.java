@@ -24,7 +24,6 @@ import android.widget.PopupWindow;
 
 import com.shine.mobilenurse.R;
 import com.shine.mobilenurse.base.BaseActivity;
-import com.shine.mobilenurse.base.BaseRecyAdapter;
 import com.shine.mobilenurse.base.RecyclerItemClickListener;
 import com.shine.mobilenurse.entity.Beds;
 import com.shine.mobilenurse.entity.Option;
@@ -49,7 +48,6 @@ import com.shine.mobilenurse.function.signs.SignsFragment;
 import com.shine.mobilenurse.function.skinTest.SkinTestFragment;
 import com.shine.mobilenurse.function.specimen.SpecimenFragment;
 import com.shine.mobilenurse.function.temperature.TemperatureFragment;
-import com.shine.mobilenurse.utils.LogPrint;
 import com.shine.mobilenurse.utils.TDUtils;
 import com.shine.mobilenurse.utils.ViewUtil;
 import com.shine.mobilenurse.view.LogoAndTextView;
@@ -70,6 +68,11 @@ public class MainActivity extends BaseActivity {
 
     private List<LogoAndTextView> tabViews = new ArrayList<>();
     private HashMap<String, Fragment> fragmentMap = new HashMap<>();
+
+    //数据量较大时使用ArrayMap节省内存，牺牲查找时间为代价
+//    private ArrayMap<String,Fragment> fragmentMap=new ArrayMap<>();
+
+
     private String taging = null;
     private int tabing = -1;
 
@@ -433,9 +436,7 @@ public class MainActivity extends BaseActivity {
      * @return
      */
     private int comPos(int pos, int old) {
-
         int a = 0;
-
         //1.recy宽度
         int recyW = recyclerViewBeds.getWidth();
         //2.item总长度
@@ -537,7 +538,7 @@ public class MainActivity extends BaseActivity {
         recyclerView_.addOnItemTouchListener(new RecyclerItemClickListener(this) {
             @Override
             protected void onItemClick(View view, int position) {
-                if (adapter.getItem(position).getTag().equals("hot"))
+                if (adapter.getItem(position).getTeg().equals("hot"))
                     chooseBeds(14);
                 else {
                     chooseBeds(5);

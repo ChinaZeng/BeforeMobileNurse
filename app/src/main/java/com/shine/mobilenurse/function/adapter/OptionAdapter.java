@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -50,7 +51,7 @@ public class OptionAdapter extends BaseRecyAdapter<Option> {
             final Option bean = mData.get(position);
             OptionViewHolder optionViewHolder = (OptionViewHolder) holder;
             optionViewHolder.TImageBTextView.setText(bean.getName());
-            optionViewHolder.TImageBTextView.setSrc(Res.getDrawByTag(context, bean.getTag()));
+            optionViewHolder.TImageBTextView.setSrc(Res.getDrawByTag(context, bean.getTeg()));
         }
     }
 
@@ -61,7 +62,10 @@ public class OptionAdapter extends BaseRecyAdapter<Option> {
 
     @Override
     public OptionAdapter.OptionViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+//        View view=new LogoAndTextView(context);
+//        return new OptionViewHolder(view);
         return new OptionViewHolder(LayoutInflater.from(context).inflate(R.layout.item_options, parent, false));
+
     }
 
 
@@ -72,12 +76,25 @@ public class OptionAdapter extends BaseRecyAdapter<Option> {
 
         public OptionViewHolder(View itemView) {
             super(itemView);
+//            TImageBTextView= (LogoAndTextView) itemView;
+//            TImageBTextView.setClickable(true);
             TImageBTextView = (LogoAndTextView) itemView.findViewById(R.id.item_op_mid_0_root);
             if (type == CHILD_W_MATCH) {
                 TImageBTextView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             } else {
                 TImageBTextView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT));
             }
+
+            TImageBTextView.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+                @Override
+                public void onFocusChange(View v, boolean hasFocus) {
+                    if(hasFocus){
+                        Log.d("焦点切换","有焦点");
+                    }else {
+                        Log.d("焦点切换","无焦点");
+                    }
+                }
+            });
         }
 
 

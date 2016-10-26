@@ -1,22 +1,19 @@
 package com.shine.mobilenurse.function.options;
 
 import android.app.Activity;
-import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.StaggeredGridLayoutManager;
 import android.view.View;
+import android.widget.AdapterView;
+import android.widget.GridView;
 import android.widget.RadioGroup;
-import android.widget.TextView;
 
 import com.shine.mobilenurse.R;
 import com.shine.mobilenurse.base.BaseFragment;
-import com.shine.mobilenurse.base.BaseRecyAdapter;
-import com.shine.mobilenurse.base.RecyclerItemClickListener;
 import com.shine.mobilenurse.db.OptionDao;
 import com.shine.mobilenurse.entity.Option;
 import com.shine.mobilenurse.function.MainActivity;
 import com.shine.mobilenurse.function.Res;
 import com.shine.mobilenurse.function.account.AccountFragment;
-import com.shine.mobilenurse.function.adapter.OptionAdapter;
+import com.shine.mobilenurse.function.adapter.OptionGridViewAdapter;
 import com.shine.mobilenurse.function.assess.AssessFragment;
 import com.shine.mobilenurse.function.beds.BedsFragment;
 import com.shine.mobilenurse.function.blood.BloodFragment;
@@ -46,12 +43,13 @@ import java.util.List;
  * Created by zzw on 2016/10/13.
  * 描述:首页选项
  */
-public class OptionsFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener {
-    private RecyclerView recyclerView;
-    private OptionAdapter adapter;
+public class OptionsFragment extends BaseFragment implements RadioGroup.OnCheckedChangeListener, AdapterView.OnItemClickListener {
     private List<LogoAndTextView> topViewList = new ArrayList<>();
     private List<LogoAndTextView> mid1ViewList = new ArrayList<>();
     private List<LogoAndTextView> bottomViewList = new ArrayList<>();
+
+    private GridView gridView;
+    private OptionGridViewAdapter adapter;
 
     public static OptionsFragment newInstance() {
         return new OptionsFragment();
@@ -65,15 +63,10 @@ public class OptionsFragment extends BaseFragment implements RadioGroup.OnChecke
     @Override
     protected void initView(View view) {
         super.initView(view);
-        adapter = new OptionAdapter(getActivity());
-        recyclerView.setLayoutManager(new StaggeredGridLayoutManager(4, StaggeredGridLayoutManager.VERTICAL));
-        recyclerView.setAdapter(adapter);
-        recyclerView.addOnItemTouchListener(new RecyclerItemClickListener(getContext()) {
-            @Override
-            protected void onItemClick(View view, int position) {
-                clickOp(adapter.getItem(position).getTag());
-            }
-        });
+
+        adapter = new OptionGridViewAdapter(getActivity());
+        gridView.setAdapter(adapter);
+        gridView.setOnItemClickListener(this);
     }
 
 
@@ -165,7 +158,7 @@ public class OptionsFragment extends BaseFragment implements RadioGroup.OnChecke
         RadioGroup rg = ViewUtil.$(view, R.id.radioGroup);
         rg.setOnCheckedChangeListener(this);
 
-        recyclerView = ViewUtil.$(view, R.id.op_mid_0_recy);
+        gridView = ViewUtil.$(view, R.id.gridView);
     }
 
     @Override
@@ -185,10 +178,11 @@ public class OptionsFragment extends BaseFragment implements RadioGroup.OnChecke
             case R.id.op_bottom_1:
                 if (v instanceof LogoAndTextView) {
                     LogoAndTextView view = (LogoAndTextView) v;
-                    clickOp(view.getTag());
+                    clickOp(view.getTeg());
                 }
                 break;
 
+            //自定义
             case R.id.op_bottom_2:
 
                 break;
@@ -220,9 +214,9 @@ public class OptionsFragment extends BaseFragment implements RadioGroup.OnChecke
         for (int i = 0; i < a; i++) {
             Option bean = data.get(i);
             LogoAndTextView view = views.get(i);
-            view.setSrc(Res.getDrawByTag(getContext(), bean.getTag()));
+            view.setSrc(Res.getDrawByTag(getContext(), bean.getTeg()));
             view.setText(bean.getName());
-            view.setTag(bean.getTag());
+            view.setTeg(bean.getTeg());
         }
     }
 
@@ -294,4 +288,8 @@ public class OptionsFragment extends BaseFragment implements RadioGroup.OnChecke
         }
     }
 
+    @Override
+    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+        clickOp(adapter.getItem(position).getTeg());
+    }
 }

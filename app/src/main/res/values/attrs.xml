@@ -13,6 +13,7 @@
         <attr name="textSize" format="integer" />
         <attr name="src" format="reference" />
         <attr name="tag" format="string" />
+        <attr name="background" format="reference"/>
     </declare-styleable>
 
 
