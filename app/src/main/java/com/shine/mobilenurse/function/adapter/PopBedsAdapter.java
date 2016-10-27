@@ -57,7 +57,7 @@ public class PopBedsAdapter extends BaseRecyAdapter<Beds> {
     }
 
     public boolean chooseBeds(int newPos) {
-        if (choPos == newPos && newPos > mData.size() && newPos >= 0)
+        if (choPos == newPos || newPos > mData.size() - 1 || newPos < 0)
             return false;
         this.oldPos = choPos;
         this.choPos = newPos;

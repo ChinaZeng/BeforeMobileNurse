@@ -439,7 +439,7 @@ public class MainActivity extends BaseActivity {
         int a = 0;
         //1.recy宽度
         int recyW = recyclerViewBeds.getWidth();
-        //2.item总长度
+        //2.可见item总长度
         int itemLen = 0;
         for (int i = 0; i < recyclerViewBeds.getChildCount(); i++) {
             itemLen += recyclerViewBeds.getChildAt(i).getWidth();
@@ -458,7 +458,7 @@ public class MainActivity extends BaseActivity {
                 a = pos - rCount / 2;
             }
         } else if (pos >= bedsAdapter.getItemCount() - rCount / 2) {
-            a = bedsAdapter.getItemCount() - rCount / 2;
+            a = bedsAdapter.getItemCount();
         }
         return a;
     }
@@ -495,7 +495,7 @@ public class MainActivity extends BaseActivity {
 
     private List<Beds> testData() {
         List<Beds> list = new ArrayList<>();
-        for (int i = 1; i < 20; i++) {
+        for (int i = 1; i <= 20; i++) {
             list.add(new Beds(i, "张三" + i));
         }
         return list;
@@ -538,11 +538,7 @@ public class MainActivity extends BaseActivity {
         recyclerView_.addOnItemTouchListener(new RecyclerItemClickListener(this) {
             @Override
             protected void onItemClick(View view, int position) {
-                if (adapter.getItem(position).getTeg().equals("hot"))
-                    chooseBeds(14);
-                else {
-                    chooseBeds(5);
-                }
+                chooseBeds((int) (Math.random() * bedsAdapter.getItemCount()));
             }
         });
 
