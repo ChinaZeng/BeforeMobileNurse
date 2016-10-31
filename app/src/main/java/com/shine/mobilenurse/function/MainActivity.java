@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.graphics.Color;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.ColorDrawable;
+import android.hardware.barcode.Scanner;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -48,6 +49,7 @@ import com.shine.mobilenurse.function.signs.SignsFragment;
 import com.shine.mobilenurse.function.skinTest.SkinTestFragment;
 import com.shine.mobilenurse.function.specimen.SpecimenFragment;
 import com.shine.mobilenurse.function.temperature.TemperatureFragment;
+import com.shine.mobilenurse.scan.ScanHandler;
 import com.shine.mobilenurse.utils.TDUtils;
 import com.shine.mobilenurse.utils.ViewUtil;
 import com.shine.mobilenurse.view.LogoAndTextView;
@@ -396,6 +398,7 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.main_tab_1:
                 selectionTab(1);
+                Scanner.Read();
                 break;
             case R.id.main_tab_2:
                 selectionTab(2);
@@ -619,5 +622,12 @@ public class MainActivity extends BaseActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
+    }
+
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
     }
 }

@@ -11,6 +11,7 @@ public class MobileEnurseApp extends BaseApplication {
 
     private static MobileEnurseApp appInstance = null;
 
+
     @Override
     public void onCreate() {
         super.onCreate();

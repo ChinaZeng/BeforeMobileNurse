@@ -1,9 +1,13 @@
 package com.shine.mobilenurse.base;
 
+import android.hardware.barcode.Scanner;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
+
+import com.shine.mobilenurse.utils.LogPrint;
 
 import rx.Subscription;
 
@@ -85,6 +89,21 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
         if (subscription != null && !subscription.isUnsubscribed()) {
             subscription.unsubscribe();
         }
+    }
+
+
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+
+        LogPrint.log_d("zzz", "keyCode:" + keyCode);
+        if (event.getRepeatCount() == 0) {
+            if (keyCode == 4) {
+                finish();
+            } else if ((keyCode == 220) | (keyCode == 211) | (keyCode == 212) | (keyCode == 221)) {
+                //扫描开始
+                Scanner.Read();
+            }
+        }
+        return true;
     }
 
 
