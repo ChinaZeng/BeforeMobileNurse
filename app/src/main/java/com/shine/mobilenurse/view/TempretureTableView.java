@@ -41,14 +41,13 @@ public class TempretureTableView extends View {
         screenH = is[1];
 
         paint = new Paint();
-        paint.setTextSize(TDUtils.sp2px(context,20f));
+        paint.setTextSize(TDUtils.sp2px(context, 20f));
     }
 
 
     @Override
     protected void onDraw(Canvas canvas) {
         super.onDraw(canvas);
-
         canvas.drawText("你好啊", 50, 50, paint);
     }
 

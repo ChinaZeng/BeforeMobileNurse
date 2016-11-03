@@ -7,7 +7,12 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 
 /**
@@ -17,7 +22,7 @@ import rx.Subscription;
 
 public abstract class BaseFragment extends Fragment implements View.OnClickListener {
 
-    protected Subscription subscription;
+    private CompositeSubscription mCompositeSubscription;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -90,16 +95,27 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     }
 
 
-    @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        unsubscribe();
+    public void onUnsubscribe() {
+        //取消注册，以避免内存泄露
+        if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions())
+            mCompositeSubscription.unsubscribe();
     }
 
-    protected void unsubscribe() {
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+    public void addSubscription(Observable observable, Subscriber subscriber) {
+        if (mCompositeSubscription == null) {
+            mCompositeSubscription = new CompositeSubscription();
         }
+        mCompositeSubscription.add(observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber));
+    }
+
+    public void addSubscription(Subscription subscription) {
+        if (mCompositeSubscription == null) {
+            mCompositeSubscription = new CompositeSubscription();
+        }
+        mCompositeSubscription.add(subscription);
     }
 }
 

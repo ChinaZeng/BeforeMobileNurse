@@ -7,9 +7,16 @@ import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.shine.mobilenurse.net.NetCallback;
 import com.shine.mobilenurse.utils.LogPrint;
 
+import rx.Observable;
+import rx.Subscriber;
 import rx.Subscription;
+import rx.android.schedulers.AndroidSchedulers;
+import rx.functions.Action1;
+import rx.schedulers.Schedulers;
+import rx.subscriptions.CompositeSubscription;
 
 
 /**
@@ -19,7 +26,7 @@ import rx.Subscription;
 
 public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
 
-    protected Subscription subscription;
+    private CompositeSubscription mCompositeSubscription;
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
@@ -82,19 +89,35 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        unsubscribe();
+        onUnsubscribe();
     }
 
-    protected void unsubscribe() {
-        if (subscription != null && !subscription.isUnsubscribed()) {
-            subscription.unsubscribe();
+    protected void onUnsubscribe() {
+        //取消注册，以避免内存泄露
+        if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions())
+            mCompositeSubscription.unsubscribe();
+    }
+
+    protected void addSubscription(Observable observable, Subscriber subscriber) {
+        if (mCompositeSubscription == null) {
+            mCompositeSubscription = new CompositeSubscription();
         }
+        mCompositeSubscription.add(observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread())
+                .subscribe(subscriber));
+    }
+
+    protected void addSubscription(Subscription subscription) {
+        if (mCompositeSubscription == null) {
+            mCompositeSubscription = new CompositeSubscription();
+        }
+        mCompositeSubscription.add(subscription);
     }
 
 
     public boolean onKeyDown(int keyCode, KeyEvent event) {
 
-        LogPrint.log_d("zzz", "keyCode:" + keyCode);
         if (event.getRepeatCount() == 0) {
             if (keyCode == 4) {
                 finish();

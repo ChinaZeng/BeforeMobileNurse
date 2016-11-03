@@ -398,7 +398,6 @@ public class MainActivity extends BaseActivity {
                 break;
             case R.id.main_tab_1:
                 selectionTab(1);
-                Scanner.Read();
                 break;
             case R.id.main_tab_2:
                 selectionTab(2);

@@ -130,7 +130,6 @@ public class LogoAndTextView extends LinearLayout {
             this.src = src;
             imageView.setImageDrawable(src);
         }
-
     }
 
     public void setText(String text) {
