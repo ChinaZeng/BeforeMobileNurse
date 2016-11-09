@@ -32,7 +32,6 @@ public class OptionDao extends BaseDao {
         return findAll(Selector.from(Option.class));
     }
 
-
     public synchronized List<Option> findTop() {
         return findAll(Selector.from(Option.class).where("TYPE", 0));
     }

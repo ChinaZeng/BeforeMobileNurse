@@ -13,7 +13,29 @@
         <attr name="textSize" format="integer" />
         <attr name="src" format="reference" />
         <attr name="tag" format="string" />
-        <attr name="background" format="reference"/>
+        <attr name="background" format="reference" />
+    </declare-styleable>
+
+
+    <declare-styleable name="TempretureTableView">
+
+        <attr name="padTop" format="dimension" />
+        <attr name="padLeft" format="dimension" />
+        <attr name="padRight" format="dimension" />
+        <attr name="padBottom" format="dimension" />
+        <attr name="logo" format="reference" />
+        <attr name="name" format="string" />
+        <attr name="logoAndNamePadding" format="dimension" />
+        <attr name="nameTextSize" format="dimension" />
+        <attr name="nameTextColor" format="color" />
+        <attr name="infosTextSize" format="dimension" />
+        <attr name="infosTextColor" format="color" />
+        <attr name="infoAndLogoPadding" format="dimension" />
+        <attr name="tabAndInfoPadding" format="dimension" />
+        <attr name="tabCommonFontSize" format="dimension" />
+        <attr name="tabCommonFontColor" format="color" />
+
+
     </declare-styleable>
 
 

@@ -451,6 +451,11 @@ public class MainActivity extends BaseActivity {
         //4.recy界面里面显示可见多少个item
         int rCount = recyW / itemW;
 
+        //移动的时候:选中的pos要显示在中间位置
+        //如果pos小于可显示ItemCount的二分之一的数量就移动到其实位置
+        //如果pos在界面的可显示ItemCount的二分之一和最大值减去可显示ItemCount的二分之一之间
+        // ，就移动到pos + 或者 - 界面的可显示ItemCount的二分之一
+        //如果pos在Item总数减去可显示ItemCount的二分之一后面就移动到最末尾
         if (pos <= rCount / 2) {
             a = 0;
         } else if (pos < bedsAdapter.getItemCount() - rCount / 2) {
@@ -464,7 +469,6 @@ public class MainActivity extends BaseActivity {
         }
         return a;
     }
-
     /**
      * 在指定View上方显示popWindow
      *
@@ -621,12 +625,5 @@ public class MainActivity extends BaseActivity {
             return true;
         }
         return super.onKeyDown(keyCode, event);
-    }
-
-
-    @Override
-    protected void onStart() {
-
-        super.onStart();
     }
 }
