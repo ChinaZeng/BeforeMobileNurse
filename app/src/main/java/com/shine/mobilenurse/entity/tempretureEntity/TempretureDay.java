@@ -148,11 +148,11 @@ public class TempretureDay {
     }
 
     //时间段对象
-    class TimeData {
+    public class TimeData {
         //具体时间段  4  8  12   16  20  24
         private int timeNum;
         //脉搏 次/分
-        private float pulse;
+        private int pulse;
         //体温
         private float temperature;
         //呼吸 次/秒
@@ -161,7 +161,7 @@ public class TempretureDay {
         public TimeData() {
         }
 
-        public TimeData(int timeNum, float pulse, float temperature, int braveNum) {
+        public TimeData(int timeNum, int pulse, float temperature, int braveNum) {
             this.timeNum = timeNum;
             this.pulse = pulse;
             this.temperature = temperature;
@@ -176,11 +176,11 @@ public class TempretureDay {
             this.timeNum = timeNum;
         }
 
-        public float getPulse() {
+        public int getPulse() {
             return pulse;
         }
 
-        public void setPulse(float pulse) {
+        public void setPulse(int pulse) {
             this.pulse = pulse;
         }
 
@@ -202,7 +202,7 @@ public class TempretureDay {
     }
 
     //血压对象
-    class Blood {
+     public class Blood {
         //高压
         private float highBlood;
         //低压

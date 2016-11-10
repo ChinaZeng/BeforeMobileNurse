@@ -6,10 +6,13 @@ import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.Rect;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.util.AttributeSet;
+import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 
 import com.shine.mobilenurse.R;
@@ -26,6 +29,9 @@ import java.util.List;
  */
 
 public class TempretureTableView extends View {
+
+//    private OnLoadOk onLoadOk;
+
 
     private Paint paint;
     private float screenW;
@@ -72,7 +78,43 @@ public class TempretureTableView extends View {
     private float tabCommonFontSize;
     //表格一般的文字颜色
     private int tabCommonFontColor;
+    //呼吸分为多少段
+    private int bloodsCount;
 
+    //一个时间段item的宽度
+    private float timeItemW;
+    //一天时间段数量
+    private int dayItemTimeCount;
+    //时间段间隔
+    private int timeLag;
+    //时间开始时段
+    private int startTime;
+    //时间结束时段
+    private int endTime;
+    //脉搏开始提示数值
+    private int maiBoStart;
+    //脉搏结束提示数值
+    private int maiBoEnd;
+    //脉搏和时间每一个单元之间分为多少格 按照温度为1单位
+    private int maiBoAndTempGeCount;
+    //体温开始提示数值
+    private int tempStart;
+    //体温结束提示数值
+    private int tempEnd;
+    //记录所有时间段的tabale信息 里面一个list代表一天的tab信息
+    private List<List<Table>> allDayTableList = new ArrayList<>();
+
+    //记录所有时间段的温度信息 里面一个list代表一天的温度
+    private List<List<FloatPoint>> allTemprePointList = new ArrayList<>();
+    //脉搏point集合
+    //记录所有时间段的温度信息 里面一个list代表一天的温度
+    private List<List<FloatPoint>> allMaiBoPointList = new ArrayList<>();
+
+    //脉搏提示
+    private String[] maiBoHintStrings;
+
+    //血压提示
+    private String[] tempHintStrings;
 
     public TempretureTableView(Context context) {
         this(context, null);
@@ -88,6 +130,14 @@ public class TempretureTableView extends View {
             initTypedArray(context, attrs);
         init(context);
     }
+
+//    public interface OnLoadOk {
+//        void loadOk();
+//    }
+//
+//    public void setOnLoadOk(OnLoadOk onLoadOk) {
+//        this.onLoadOk = onLoadOk;
+//    }
 
     private void init(Context context) {
         int[] is = TDUtils.getScreenWAndH(context);
@@ -115,6 +165,26 @@ public class TempretureTableView extends View {
         tabAndInfoPadding = a.getDimension(R.styleable.TempretureTableView_tabAndInfoPadding, 5);
         tabCommonFontSize = a.getDimensionPixelSize(R.styleable.TempretureTableView_tabCommonFontSize, 16);
         tabCommonFontColor = a.getColor(R.styleable.TempretureTableView_tabCommonFontColor, Color.BLACK);
+        bloodsCount = a.getInteger(R.styleable.TempretureTableView_bloodsCount, 2);
+        timeLag = a.getInteger(R.styleable.TempretureTableView_timeLag, 4);
+        if (timeLag == 0 || timeLag > 24)
+            timeLag = 4;
+        startTime = a.getInteger(R.styleable.TempretureTableView_startTime, 0);
+        endTime = a.getInteger(R.styleable.TempretureTableView_endTime, 24);
+        maiBoStart = a.getInteger(R.styleable.TempretureTableView_maiBoStart, 20);
+        maiBoEnd = a.getInteger(R.styleable.TempretureTableView_maiBoEnd, 180);
+        tempStart = a.getInteger(R.styleable.TempretureTableView_tempStart, 34);
+        tempEnd = a.getInteger(R.styleable.TempretureTableView_tempEnd, 42);
+        maiBoAndTempGeCount = a.getInteger(R.styleable.TempretureTableView_maiBoAndTempGeCount, 5);
+
+        int count = tempEnd - tempStart;
+        maiBoHintStrings = new String[count];
+        tempHintStrings = new String[count];
+        int c2 = (maiBoEnd - maiBoStart) / count;
+        for (int i = 0; i < count; i++) {
+            tempHintStrings[i] = tempEnd - i + "";
+            maiBoHintStrings[i] = maiBoEnd - i * c2 + "";
+        }
 
         a.recycle();
     }
@@ -261,22 +331,19 @@ public class TempretureTableView extends View {
     }
 
     /**
-     * 第三部:画表格
+     * 第三部:画后面的数据
      *
      * @param canvas
      */
     private void drawTable(Canvas canvas) {
         if (tempretureDayList == null || tempretureDayList.size() == 0)
             return;
-
         drawTableList(canvas, comDataList());
         drawTableList(canvas, comInToHospitalNumList());
         drawTableList(canvas, comcutNumList());
-
-
-
-
-
+        drawMid(canvas);
+        drawTableList(canvas, comBraveList());
+        drawTableList(canvas, comBloodsList());
         drawTableList(canvas, comInToNumList());
         drawTableList(canvas, comOutNumList());
         drawTableList(canvas, comShitNumByDayList());
@@ -285,8 +352,450 @@ public class TempretureTableView extends View {
         drawTableList(canvas, comMaiXiangList());
         drawTableList(canvas, comSheTaiList());
 
-//        paint.setColor(Color.BLACK);
-//        canvas.drawLine(padLeft, tempH, dayW * (tempretureDayList.size() + 1) + padLeft, tempH, paint);
+//        if (onLoadOk != null)
+//            onLoadOk.loadOk();
+    }
+
+    /**
+     * 画中间时间段部分
+     *
+     * @param canvas
+     */
+    private void drawMid(Canvas canvas) {
+        drawTableList(canvas, comTimeItemData());
+        drawMidTable(canvas);
+        comTempAndMaiBoPointList();
+        drawTempre(canvas);
+        drawMaiBo(canvas);
+    }
+
+    /**
+     * 画温度曲线
+     *
+     * @param canvas
+     */
+    private void drawTempre(Canvas canvas) {
+        Paint paint = new Paint();
+        Path path = new Path();
+        paint.setColor(Color.RED);
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.FILL);
+        boolean t = false;
+        for (int i = 0; i < allTemprePointList.size(); i++) {
+            List<FloatPoint> points = allTemprePointList.get(i);
+            if (points != null && points.size() > 0) {
+                for (int j = 0; j < points.size(); j++) {
+                    FloatPoint point = points.get(j);
+                    if (j == 0 && !t) {
+                        path.moveTo(point.getX(), point.getY());
+                        t = true;
+                    } else {
+                        path.lineTo(point.getX(), point.getY());
+                    }
+                    canvas.drawCircle(point.getX(), point.getY(), 3, paint);
+                }
+            }
+        }
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawPath(path, paint);
+    }
+
+    /**
+     * 画脉搏曲线
+     *
+     * @param canvas
+     */
+    private void drawMaiBo(Canvas canvas) {
+        Paint paint = new Paint();
+        Path path = new Path();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.BLUE);
+        paint.setStyle(Paint.Style.FILL);
+        boolean t = false;
+        for (int i = 0; i < allMaiBoPointList.size(); i++) {
+            List<FloatPoint> points = allMaiBoPointList.get(i);
+            if (points != null && points.size() > 0) {
+                for (int j = 0; j < points.size(); j++) {
+                    FloatPoint point = points.get(j);
+                    if (j == 0 && !t) {
+                        path.moveTo(point.getX(), point.getY());
+                        t = true;
+                    } else {
+                        path.lineTo(point.getX(), point.getY());
+                    }
+                    canvas.drawLine(point.getX() - 3, point.getY() - 3, point.getX() + 3, point.getY() + 3, paint);
+                    canvas.drawLine(point.getX() - 3, point.getY() + 3, point.getX() + 3, point.getY() - 3, paint);
+                }
+            }
+        }
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawPath(path, paint);
+    }
+
+    /**
+     * 计算出要画的脉搏和温度 点位置
+     */
+    private void comTempAndMaiBoPointList() {
+        for (int i = 0; i < tempretureDayList.size(); i++) {
+            List<Table> dayTables = allDayTableList.get(i);
+
+            float startX = dayTables.get(0).getX();
+            float startY = dayTables.get(0).getY() + dayTables.get(0).getH();
+
+            //一个时间段一格多宽
+            float taw = dayW / dayItemTimeCount;
+            TempretureDay.TimeData[] timeDatas = tempretureDayList.get(i).getTimeDatas();
+            if (timeDatas != null) {
+                List<FloatPoint> tempreDaylist = new ArrayList<>();
+                List<FloatPoint> maiBoDaylist = new ArrayList<>();
+                //每一格代表的温度值
+                float a = 1.0f / maiBoAndTempGeCount;
+
+                //每一格代表的脉搏值
+                float b = (float) (maiBoEnd - maiBoStart) / (float) ((tempEnd - tempStart) * maiBoAndTempGeCount);
+
+                //每一个代表的时间值
+                float c = (float) (endTime - startTime) / (float) (dayItemTimeCount);
+
+
+                for (TempretureDay.TimeData timeData : timeDatas) {
+                    if (timeData != null) {
+                        int timeNum = timeData.getTimeNum();
+                        if (timeNum != 0) {
+                            //体温和脉搏的X坐标
+                            float x = startX + (timeNum - startTime) / c * taw;
+                            //计算体温的的Y点坐标
+                            if (timeData.getTemperature() != 0) {
+                                //（最大温度-当前温度）*
+                                float y = startY + (((tempEnd - timeData.getTemperature()) / a) * timeItemW);
+                                FloatPoint point = new FloatPoint(x, y);
+                                tempreDaylist.add(point);
+                            }
+
+                            //计算脉搏的Y点坐标
+                            if (timeData.getPulse() != 0) {
+                                float y = startY + ((maiBoEnd - timeData.getPulse()) / b) * timeItemW;
+                                FloatPoint point = new FloatPoint(x, y);
+                                maiBoDaylist.add(point);
+                            }
+                        }
+                    }
+                }
+                allTemprePointList.add(tempreDaylist);
+                allMaiBoPointList.add(maiBoDaylist);
+            }
+        }
+    }
+
+
+    /**
+     * 画中间表格及hint
+     *
+     * @param canvas
+     */
+    private void drawMidTable(Canvas canvas) {
+        float midTabH = (tempEnd - tempStart) * maiBoAndTempGeCount * timeItemW;
+        //画竖线:
+        Paint paint = new Paint();
+        paint.setColor(Color.BLACK);
+        canvas.drawLine(padLeft, tempH, padLeft, tempH + midTabH, paint);
+        for (int i = 0; i < allDayTableList.size(); i++) {
+            List<Table> dayTabList = allDayTableList.get(i);
+            for (int j = 0; j < dayTabList.size(); j++) {
+                Table table = dayTabList.get(j);
+                if (j == 0) {
+                    paint.setColor(Color.RED);
+                } else {
+                    paint.setColor(Color.GRAY);
+                }
+                canvas.drawLine(table.getX(), table.getY() + table.getH(), table.getX(), table.getY() + table.getH() + midTabH, paint);
+                //画最后一根线
+                if (j == dayTabList.size() - 1) {
+                    paint.setColor(Color.RED);
+                    canvas.drawLine(table.getX() + table.getW(), table.getY() + table.getH(), table.getX() + table.getW(), table.getY() + table.getH() + midTabH, paint);
+                }
+            }
+        }
+
+        //记录中间粗线的Y坐标
+        Float[] hintsY = new Float[tempEnd - tempStart];
+        //画横线
+        int t = 1;
+        hintsY[0] = tempH;
+        for (int i = 1; i < (tempEnd - tempStart) * maiBoAndTempGeCount; i++) {
+            float y = tempH + i * timeItemW;
+            if (i % maiBoAndTempGeCount == 0) {
+                paint.setColor(Color.BLACK);
+                hintsY[t] = y;
+                t++;
+            } else {
+                paint.setColor(Color.GRAY);
+            }
+            canvas.drawLine(dayW + padLeft, y, screenW - padRight, y, paint);
+        }
+
+        //画提示
+        float hitMidX = padLeft + dayW / 2;
+        //画提示中间线
+        paint.setColor(Color.BLACK);
+        canvas.drawLine(hitMidX, tempH, hitMidX, tempH + midTabH, paint);
+
+        //画提示文字
+        paint.setTextSize(tabCommonFontSize);
+        float sh = meauTextHeight(paint, "8");
+        for (int i = 1; i < tempHintStrings.length; i++) {
+            String maiboS = maiBoHintStrings[i];
+            String temprS = tempHintStrings[i];
+            float y = hintsY[i];
+            float startX;
+            startX = padLeft + (dayW / 2 - meauTextWidth(paint, maiboS)) / 2;
+            canvas.drawText(maiboS, startX, y + sh / 2, paint);
+            startX = padLeft + dayW / 2 + (dayW / 2 - meauTextWidth(paint, temprS)) / 2;
+            canvas.drawText(temprS, startX, y + sh / 2, paint);
+        }
+        float th_1 = tempH;
+        //画脉搏 词
+        String maibos = "脉搏";
+        float y = meauTextHeight(paint, maibos);
+        float x = meauTextWidth(paint, maibos);
+        canvas.drawText(maibos, padLeft + (dayW / 2 - x) / 2, th_1 + y, paint);
+        th_1 += y;
+
+        //画体温 词
+        String tiwen = "体温";
+        float th_2 = tempH;
+        y = meauTextHeight(paint, tiwen);
+        x = meauTextWidth(paint, tiwen);
+        canvas.drawText(tiwen, padLeft + dayW / 2 + (dayW / 2 - x) / 2, th_2 + y, paint);
+        th_2 += y;
+
+
+        paint.setTextSize(tabCommonFontSize * 2 / 3);
+        //画(次/分)
+        String maiBoDanWei = "(次/分)";
+        y = meauTextHeight(paint, maiBoDanWei);
+        x = meauTextWidth(paint, maiBoDanWei);
+        canvas.drawText(maiBoDanWei, padLeft + (dayW / 2 - x) / 2, th_1 + y + 2, paint);
+        th_1 += y + 2;
+
+        //画(℃)
+        String sheshidu = "(℃)";
+        y = meauTextHeight(paint, sheshidu);
+        x = meauTextWidth(paint, sheshidu);
+        canvas.drawText(sheshidu, padLeft + dayW / 2 + (dayW / 2 - x) / 2, th_2 + y + 2, paint);
+        th_2 += y + 2;
+
+        paint.setTextSize(tabCommonFontSize);
+        //画脉搏第一个数值
+        String maiBoHint0 = maiBoHintStrings[0];
+        y = meauTextHeight(paint, maiBoHint0);
+        x = meauTextWidth(paint, maiBoHint0);
+        canvas.drawText(maiBoHint0, padLeft + (dayW / 2 - x) / 2, th_1 + y + 2, paint);
+
+        //画体温第一个数值
+        String tempreHint0 = tempHintStrings[0];
+        y = meauTextHeight(paint, tempreHint0);
+        x = meauTextWidth(paint, tempreHint0);
+        canvas.drawText(tempreHint0, padLeft + dayW / 2 + (dayW / 2 - x) / 2, th_2 + y + 2, paint);
+
+
+        tempH += midTabH;
+    }
+
+    /**
+     * 计算每个时间段呼吸量  timeDatas和对应的时间段数量count要一致
+     *
+     * @return
+     */
+    private List<Table> comBraveList() {
+        Paint paint = new Paint();
+        paint.setTextSize(tabCommonFontSize);
+        float aFontH = meauTextHeight(paint, "呼吸(次/分)");
+        List<Table> list = new ArrayList<>();
+        list.add(new Table(padLeft, tempH, dayW, aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2
+                , tabCommonFontColor, tabCommonFontSize, "呼吸(次/分)", Table.TxtType.CENTER, Color.BLACK, Color.RED
+                , Color.BLACK, Color.BLACK));
+
+        for (int i = 0; i < tempretureDayList.size(); i++) {
+            float startX = padLeft + (i + 1) * dayW;
+            TempretureDay.TimeData[] timeDatas = tempretureDayList.get(i).getTimeDatas();
+
+            if (timeDatas == null)
+                timeDatas = new TempretureDay.TimeData[dayItemTimeCount];
+
+            if (timeDatas.length < dayItemTimeCount)
+                return list;
+
+
+            for (int j = 0; j < timeDatas.length; j++) {
+                Table table = null;
+                Table.TxtType type;
+                if (j % 2 == 0) {
+                    type = Table.TxtType.CENTENT_TOP;
+                } else {
+                    type = Table.TxtType.CENTENT_BOTTOM;
+                }
+                String s = "";
+                TempretureDay.TimeData data = timeDatas[j];
+                if (data != null) {
+                    s += timeDatas[j].getBraveNum();
+                }
+                if (j == timeDatas.length - 1) {
+                    table = new Table(startX + timeItemW * j, tempH, timeItemW, aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2, Color.RED
+                            , tabCommonFontSize * 2 / 3, s, type, 0, Color.RED
+                            , Color.BLACK, Color.BLACK);
+                } else {
+                    table = new Table(startX + timeItemW * j, tempH, timeItemW, aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2, Color.RED
+                            , tabCommonFontSize * 2 / 3, s, type, 0, Color.BLACK
+                            , Color.BLACK, Color.BLACK);
+                }
+                list.add(table);
+            }
+        }
+
+        tempH += aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2;
+        return list;
+    }
+
+
+    /**
+     * 计算时间段的table的数据
+     * dayItemTimeCount在这里面计算出  由开始时间  结束时间  还有时间间隔算出
+     *
+     * @return
+     */
+    private List<Table> comTimeItemData() {
+        Paint paint = new Paint();
+        paint.setTextSize(tabCommonFontSize);
+        float aFontH = meauTextHeight(paint, "时  间");
+        List<Table> list = new ArrayList<>();//总的list
+        list.add(new Table(padLeft, tempH, dayW, aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2
+                , tabCommonFontColor, tabCommonFontSize, "时  间", Table.TxtType.CENTER, Color.BLACK, Color.RED
+                , Color.BLACK, Color.BLACK));
+        //根据时间间隔算出一天分为多少段
+        dayItemTimeCount = (endTime - startTime) / timeLag;
+        int[] times = new int[dayItemTimeCount];
+        for (int x = 0; x < dayItemTimeCount; x++) {
+            times[x] = startTime + timeLag * (x + 1);
+        }
+
+        timeItemW = dayW / dayItemTimeCount;
+        for (int i = 0; i < tempretureDayList.size(); i++) {
+            float startX = padLeft + (i + 1) * dayW;
+            List<Table> dayList = new ArrayList<>();//这一天的时间段list
+            for (int j = 0; j < times.length; j++) {
+                Table table = null;
+                if (j == times.length - 1) {
+                    table = new Table(startX + timeItemW * j, tempH, timeItemW, aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2, tabCommonFontColor
+                            , tabCommonFontSize * 2 / 3, times[j] + "", Table.TxtType.CENTER, 0, Color.RED
+                            , Color.BLACK, Color.BLACK);
+                } else {
+                    table = new Table(startX + timeItemW * j, tempH, timeItemW, aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2, tabCommonFontColor
+                            , tabCommonFontSize * 2 / 3, times[j] + "", Table.TxtType.CENTER, 0, Color.BLACK
+                            , Color.BLACK, Color.BLACK);
+                }
+                list.add(table);
+                dayList.add(table);
+            }
+            allDayTableList.add(dayList);
+        }
+        tempH += aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2;
+        return list;
+    }
+
+
+    /**
+     * 计算血压(自己规定段数)
+     *
+     * @return
+     */
+    private List<Table> comBloodsList() {
+        Paint paint = new Paint();
+        paint.setTextSize(tabCommonFontSize);
+        float aFontH = meauTextHeight(paint, "血压(mmHg)");
+        List<Table> list = new ArrayList<>();
+        list.add(new Table(padLeft, tempH, dayW, aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2
+                , tabCommonFontColor, tabCommonFontSize, "血压(mmHg)", Table.TxtType.CENTER, Color.BLACK, Color.RED
+                , Color.BLACK, Color.BLACK));
+        for (int i = 0; i < tempretureDayList.size(); i++) {
+            TempretureDay tempretureDay = tempretureDayList.get(i);
+            TempretureDay.Blood[] bloods = tempretureDay.getBloods();
+            float startX = padLeft + (i + 1) * dayW;
+            float a = dayW / bloodsCount;//里面内容每个宽度
+            for (int j = 0; j < bloodsCount; j++) {
+                String s = "";
+                if (bloods != null && j < bloods.length) {
+                    TempretureDay.Blood blood = bloods[j];
+                    if (blood != null)
+                        s = blood.getHighBlood() + "/" + blood.getLowBlood();
+                }
+                Table table;
+                if (j == bloodsCount - 1) {
+                    table = new Table(startX + a * j, tempH, a, aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2, tabCommonFontColor
+                            , tabCommonFontSize, s, Table.TxtType.CENTER, 0, Color.RED
+                            , Color.BLACK, Color.BLACK);
+                } else {
+                    table = new Table(startX + a * j, tempH, a, aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2, tabCommonFontColor
+                            , tabCommonFontSize, s, Table.TxtType.CENTER, 0, Color.BLACK
+                            , Color.BLACK, Color.BLACK);
+                }
+                list.add(table);
+
+            }
+        }
+        tempH += aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2;
+        return list;
+    }
+
+    /**
+     * 计算血压(根据传入的数据动态分段)
+     *
+     * @return
+     */
+    private List<Table> comBloodsList2() {
+        Paint paint = new Paint();
+        paint.setTextSize(tabCommonFontSize);
+        float aFontH = meauTextHeight(paint, "血压(mmHg)");
+        List<Table> list = new ArrayList<>();
+        list.add(new Table(padLeft, tempH, dayW, aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2
+                , tabCommonFontColor, tabCommonFontSize, "血压(mmHg)", Table.TxtType.CENTER, Color.BLACK, Color.RED
+                , Color.BLACK, Color.BLACK));
+        for (int i = 0; i < tempretureDayList.size(); i++) {
+            TempretureDay tempretureDay = tempretureDayList.get(i);
+            TempretureDay.Blood[] bloods = tempretureDay.getBloods();
+            float startX = padLeft + (i + 1) * dayW;
+            float a = dayW;//每个内容的宽度
+            if (bloods != null && bloods.length > 0) {
+                a = dayW / bloods.length;
+            }
+
+            String s = "";
+            if (bloods == null || bloods.length == 0) {
+                list.add(new Table(startX, tempH, a, aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2, tabCommonFontColor
+                        , tabCommonFontSize, s, Table.TxtType.CENTER, 0, Color.RED
+                        , Color.BLACK, Color.BLACK));
+            } else {
+                for (int j = 0; j < bloods.length; j++) {
+                    TempretureDay.Blood blood = bloods[j];
+                    if (blood != null) {
+                        s = blood.getHighBlood() + "/" + blood.getLowBlood();
+                    }
+                    Table table;
+                    if (j == bloodsCount - 1) {
+                        table = new Table(startX + a * j, tempH, a, aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2, tabCommonFontColor
+                                , tabCommonFontSize, s, Table.TxtType.CENTER, 0, Color.RED
+                                , Color.BLACK, Color.BLACK);
+                    } else {
+                        table = new Table(startX + a * j, tempH, a, aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2, tabCommonFontColor
+                                , tabCommonFontSize, s, Table.TxtType.CENTER, 0, Color.BLACK
+                                , Color.BLACK, Color.BLACK);
+                    }
+                    list.add(table);
+                }
+            }
+        }
+        tempH += aFontH + TABLE_PADDING_TOP_AND_BOTTOM * 2;
+        return list;
     }
 
     /**
@@ -541,7 +1050,7 @@ public class TempretureTableView extends View {
 
 
     /**
-     * 计算脉象
+     * 计算舌苔
      *
      * @return
      */
@@ -661,11 +1170,11 @@ public class TempretureTableView extends View {
             float sH = meauTextHeight(paint, table.getTxt() + "");
             switch (table.getTextType()) {
                 case CENTENT_TOP:
-                    canvas.drawText(table.getTxt() + "", table.getX() + (table.getW() - sw) / 2, table.getY() + sH, paint);
+                    canvas.drawText(table.getTxt() + "", table.getX() + (table.getW() - sw) / 2, table.getY() + sH + TABLE_PADDING_TOP_AND_BOTTOM, paint);
                     break;
 
                 case CENTENT_BOTTOM:
-                    canvas.drawText(table.getTxt() + "", table.getX() + (table.getW() - sw) / 2, table.getY() + table.getH(), paint);
+                    canvas.drawText(table.getTxt() + "", table.getX() + (table.getW() - sw) / 2, table.getY() + table.getH() - TABLE_PADDING_TOP_AND_BOTTOM, paint);
                     break;
 
                 case CENTER:
@@ -674,6 +1183,7 @@ public class TempretureTableView extends View {
             }
         }
     }
+
 
     /**
      * 测量文字高度
@@ -690,6 +1200,41 @@ public class TempretureTableView extends View {
         return textHeight;
     }
 
+
+    float down_y = 0;
+
+    @Override
+    public boolean onTouchEvent(MotionEvent event) {
+        switch (event.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                down_y = event.getY();
+                break;
+
+            case MotionEvent.ACTION_HOVER_MOVE:
+                float move_y = event.getY();
+                float a = move_y - down_y;
+                if (a > 0) {
+                    if (getTop() > 0) {
+                        layout(getLeft(), (int) (getTop() + a), getRight(), (int) (getBottom() + a));
+                    }
+                } else {
+                    if (getBottom() < tempH) {
+                        layout(getLeft(), (int) (getTop() + a), getRight(), (int) (getBottom() + a));
+                    }
+                }
+                down_y = move_y;
+
+
+                break;
+
+            case MotionEvent.ACTION_UP:
+
+                break;
+        }
+
+        return super.onTouchEvent(event);
+    }
+
     /**
      * 测量文字宽度
      *
@@ -702,6 +1247,35 @@ public class TempretureTableView extends View {
         paint.getTextBounds(s, 0, s.length(), textBounds);
         int textWidth = textBounds.right - textBounds.left;
         return textWidth;
+    }
+
+    static class FloatPoint {
+        private float x;
+        private float y;
+
+        public FloatPoint() {
+        }
+
+        public FloatPoint(float x, float y) {
+            this.x = x;
+            this.y = y;
+        }
+
+        public float getX() {
+            return x;
+        }
+
+        public void setX(float x) {
+            this.x = x;
+        }
+
+        public float getY() {
+            return y;
+        }
+
+        public void setY(float y) {
+            this.y = y;
+        }
     }
 
     /**

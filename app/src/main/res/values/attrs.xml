@@ -34,6 +34,15 @@
         <attr name="tabAndInfoPadding" format="dimension" />
         <attr name="tabCommonFontSize" format="dimension" />
         <attr name="tabCommonFontColor" format="color" />
+        <attr name="bloodsCount" format="integer" />
+        <attr name="timeLag" format="integer" />
+        <attr name="startTime" format="integer" />
+        <attr name="endTime" format="integer" />
+        <attr name="maiBoStart" format="integer" />
+        <attr name="maiBoEnd" format="integer" />
+        <attr name="maiBoAndTempGeCount" format="integer" />
+        <attr name="tempStart" format="integer" />
+        <attr name="tempEnd" format="integer" />
 
 
     </declare-styleable>

@@ -5,6 +5,7 @@
     android:layout_height="match_parent"
     android:orientation="vertical">
 
+
     <com.shine.mobilenurse.view.TempretureTableView
         android:id="@+id/tempretureTableView"
         android:layout_width="match_parent"
@@ -14,5 +15,6 @@
         app:name="达州市中西医院结合医院"
         app:nameTextColor="@color/color_00B9A9"
         app:nameTextSize="@dimen/text_size_12" />
+
 
 </LinearLayout>
