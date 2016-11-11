@@ -1,4 +1,4 @@
-package com.shine.mobilenurse.common;
+package com.shine.mobilenurse.function.common;
 
 
 import android.content.Intent;

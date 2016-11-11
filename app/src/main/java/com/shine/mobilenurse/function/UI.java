@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.Bundle;
 import android.widget.Toast;
 
-import com.shine.mobilenurse.common.ScanActivity;
-import com.shine.mobilenurse.function.MainActivity;
+import com.shine.mobilenurse.function.common.ImageActivity;
+import com.shine.mobilenurse.function.common.ScanActivity;
 import com.shine.mobilenurse.view.LoadingDialog;
 
 /**
@@ -91,6 +92,12 @@ public class UI {
 
     public static void showMainActivity(Activity activity) {
         Intent intent = new Intent(activity, MainActivity.class);
+        activity.startActivity(intent);
+    }
+
+    public static void showImageActivity(Activity activity, Bundle bundle){
+        Intent intent = new Intent(activity, ImageActivity.class);
+        intent.putExtras(bundle);
         activity.startActivity(intent);
     }
 

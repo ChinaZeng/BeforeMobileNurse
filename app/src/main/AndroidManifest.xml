@@ -7,6 +7,10 @@
     <!-- 振动 -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.INTERNET" />
+
     <application
         android:allowBackup="true"
         android:name=".MobileEnurseApp"
@@ -18,11 +22,14 @@
             android:name=".function.MainActivity"
             android:screenOrientation="portrait">
 
-
         </activity>
 
+        <activity android:name=".function.common.ImageActivity"
+            android:theme="@style/AppTheme.NoActionBar"
+            />
+
         <activity
-            android:name=".common.ScanActivity"
+            android:name=".function.common.ScanActivity"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.NoTitleBar.Fullscreen"

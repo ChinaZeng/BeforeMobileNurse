@@ -30,7 +30,7 @@ import java.util.List;
 
 public class TempretureTableView extends View {
 
-//    private OnLoadOk onLoadOk;
+    private OnLoadOk onLoadOk;
 
 
     private Paint paint;
@@ -126,18 +126,17 @@ public class TempretureTableView extends View {
 
     public TempretureTableView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        if (attrs != null)
             initTypedArray(context, attrs);
         init(context);
     }
 
-//    public interface OnLoadOk {
-//        void loadOk();
-//    }
-//
-//    public void setOnLoadOk(OnLoadOk onLoadOk) {
-//        this.onLoadOk = onLoadOk;
-//    }
+    public interface OnLoadOk {
+        void loadOk(View view);
+    }
+
+    public void setOnLoadOk(OnLoadOk onLoadOk) {
+        this.onLoadOk = onLoadOk;
+    }
 
     private void init(Context context) {
         int[] is = TDUtils.getScreenWAndH(context);
@@ -185,25 +184,26 @@ public class TempretureTableView extends View {
             tempHintStrings[i] = tempEnd - i + "";
             maiBoHintStrings[i] = maiBoEnd - i * c2 + "";
         }
-
         a.recycle();
+        setBackgroundColor(Color.WHITE);
     }
-//
+
 //    @Override
 //    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
 //        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-//        int specWMode = MeasureSpec.getMode(widthMeasureSpec);
 //        int specHMode = MeasureSpec.getMode(heightMeasureSpec);
 //
-//        int specWSize = MeasureSpec.getSize(widthMeasureSpec);
-//        switch (specWMode) {
+//        float specHSize = MeasureSpec.getSize(heightMeasureSpec);
+//        switch (specHMode) {
+//            case MeasureSpec.UNSPECIFIED:
 //            case MeasureSpec.AT_MOST:
 //                if (tempretureDayList != null && tempretureDayList.size() != 0) {
 //                    Paint paint = new Paint();
 //                    paint.setTextSize(tabCommonFontSize);
-//                    float a = meauTextWidth(paint, tempretureDayList.get(0).getDate());
-//                    screenW = a * (tempretureDayList.size() + 1);
-//                    specWSize = (int) screenW;
+//                    float infoH=meauTextHeight(paint,"科室");
+//                    float comTableH=meauTextHeight(paint,"日期")+2*TABLE_PADDING_TOP_AND_BOTTOM;
+//                    specHSize=padTop+LOGO_W_AND_H+infoH+infoAndLogoPadding+
+//                            comTableH*13+timeItemW*(tempEnd-tempStart)*maiBoAndTempGeCount;
 //                }
 //
 //                break;
@@ -212,7 +212,7 @@ public class TempretureTableView extends View {
 //
 //                break;
 //        }
-//        setMeasuredDimension(specWSize, MeasureSpec.getSize(heightMeasureSpec));
+//        setMeasuredDimension((int) screenW, (int) specHSize);
 //    }
 
     @Override
@@ -352,8 +352,8 @@ public class TempretureTableView extends View {
         drawTableList(canvas, comMaiXiangList());
         drawTableList(canvas, comSheTaiList());
 
-//        if (onLoadOk != null)
-//            onLoadOk.loadOk();
+        if (onLoadOk != null)
+            onLoadOk.loadOk(this);
     }
 
     /**
@@ -665,6 +665,9 @@ public class TempretureTableView extends View {
      * @return
      */
     private List<Table> comTimeItemData() {
+
+
+
         Paint paint = new Paint();
         paint.setTextSize(tabCommonFontSize);
         float aFontH = meauTextHeight(paint, "时  间");
@@ -674,12 +677,16 @@ public class TempretureTableView extends View {
                 , Color.BLACK, Color.BLACK));
         //根据时间间隔算出一天分为多少段
         dayItemTimeCount = (endTime - startTime) / timeLag;
+
+        //每个时间段的宽度
+        timeItemW = dayW / dayItemTimeCount;
+
         int[] times = new int[dayItemTimeCount];
         for (int x = 0; x < dayItemTimeCount; x++) {
             times[x] = startTime + timeLag * (x + 1);
         }
 
-        timeItemW = dayW / dayItemTimeCount;
+
         for (int i = 0; i < tempretureDayList.size(); i++) {
             float startX = padLeft + (i + 1) * dayW;
             List<Table> dayList = new ArrayList<>();//这一天的时间段list
@@ -806,6 +813,8 @@ public class TempretureTableView extends View {
     private List<Table> comDataList() {
         //每一天在屏幕上占据的宽度
         dayW = (screenW - padLeft - padRight) / (tempretureDayList.size() + 1);
+
+
         Paint paint = new Paint();
         paint.setTextSize(tabCommonFontSize);
         float aFontH = meauTextHeight(paint, "日   期");
@@ -1114,20 +1123,20 @@ public class TempretureTableView extends View {
 
     public void setTempretureInfos(TempretureInfos tempretureInfos) {
         this.infos = tempretureInfos;
-        invalidate();
+//        invalidate();
     }
 
 
     public void setTempretureDay(List<TempretureDay> tempretureDayList) {
         this.tempretureDayList = tempretureDayList;
-        invalidate();
+//        invalidate();
     }
 
 
     public void setData(TempretureInfos tempretureInfos, List<TempretureDay> tempretureDayList) {
         this.infos = tempretureInfos;
         this.tempretureDayList = tempretureDayList;
-        invalidate();
+//        invalidate();
     }
 
     /**
@@ -1184,6 +1193,116 @@ public class TempretureTableView extends View {
         }
     }
 
+    public void setName(String name) {
+        this.name = name;
+    }
+
+
+    public void setTempEnd(int tempEnd) {
+        this.tempEnd = tempEnd;
+    }
+
+    public void setPadTop(float padTop) {
+        this.padTop = padTop;
+    }
+
+    public void setPadLeft(float padLeft) {
+        this.padLeft = padLeft;
+    }
+
+    public void setPadRight(float padRight) {
+        this.padRight = padRight;
+    }
+
+    public void setPadBottom(float padBottom) {
+        this.padBottom = padBottom;
+    }
+
+    public void setLogo(Drawable logo) {
+        this.logo = logo;
+    }
+
+    public void setLogoAndNamePadding(float logoAndNamePadding) {
+        this.logoAndNamePadding = logoAndNamePadding;
+    }
+
+    public void setNameTextSize(float nameTextSize) {
+        this.nameTextSize = nameTextSize;
+    }
+
+    public void setNameTextColor(int nameTextColor) {
+        this.nameTextColor = nameTextColor;
+    }
+
+    public void setInfos(TempretureInfos infos) {
+        this.infos = infos;
+    }
+
+    public void setInfosTextSize(float infosTextSize) {
+        this.infosTextSize = infosTextSize;
+    }
+
+
+
+    public void setInfoAndLogoPadding(float infoAndLogoPadding) {
+        this.infoAndLogoPadding = infoAndLogoPadding;
+    }
+
+    public void setInfosTextColor(int infosTextColor) {
+        this.infosTextColor = infosTextColor;
+    }
+
+    public void setTempretureDayList(List<TempretureDay> tempretureDayList) {
+        this.tempretureDayList = tempretureDayList;
+    }
+
+    public void setTabAndInfoPadding(float tabAndInfoPadding) {
+        this.tabAndInfoPadding = tabAndInfoPadding;
+    }
+
+    public void setTabCommonFontSize(float tabCommonFontSize) {
+        this.tabCommonFontSize = tabCommonFontSize;
+    }
+
+    public void setTabCommonFontColor(int tabCommonFontColor) {
+        this.tabCommonFontColor = tabCommonFontColor;
+    }
+
+    public void setBloodsCount(int bloodsCount) {
+        this.bloodsCount = bloodsCount;
+    }
+
+    public void setDayItemTimeCount(int dayItemTimeCount) {
+        this.dayItemTimeCount = dayItemTimeCount;
+    }
+
+    public void setTimeLag(int timeLag) {
+        this.timeLag = timeLag;
+    }
+
+    public void setStartTime(int startTime) {
+        this.startTime = startTime;
+    }
+
+    public void setEndTime(int endTime) {
+        this.endTime = endTime;
+    }
+
+    public void setMaiBoStart(int maiBoStart) {
+        this.maiBoStart = maiBoStart;
+    }
+
+    public void setMaiBoEnd(int maiBoEnd) {
+        this.maiBoEnd = maiBoEnd;
+    }
+
+    public void setMaiBoAndTempGeCount(int maiBoAndTempGeCount) {
+        this.maiBoAndTempGeCount = maiBoAndTempGeCount;
+    }
+
+    public void setTempStart(int tempStart) {
+        this.tempStart = tempStart;
+    }
 
     /**
      * 测量文字高度
@@ -1200,39 +1319,8 @@ public class TempretureTableView extends View {
         return textHeight;
     }
 
-
-    float down_y = 0;
-
-    @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        switch (event.getAction()) {
-            case MotionEvent.ACTION_DOWN:
-                down_y = event.getY();
-                break;
-
-            case MotionEvent.ACTION_HOVER_MOVE:
-                float move_y = event.getY();
-                float a = move_y - down_y;
-                if (a > 0) {
-                    if (getTop() > 0) {
-                        layout(getLeft(), (int) (getTop() + a), getRight(), (int) (getBottom() + a));
-                    }
-                } else {
-                    if (getBottom() < tempH) {
-                        layout(getLeft(), (int) (getTop() + a), getRight(), (int) (getBottom() + a));
-                    }
-                }
-                down_y = move_y;
-
-
-                break;
-
-            case MotionEvent.ACTION_UP:
-
-                break;
-        }
-
-        return super.onTouchEvent(event);
+    public float getTempH(){
+        return  tempH;
     }
 
     /**

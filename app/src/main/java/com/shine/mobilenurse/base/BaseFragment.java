@@ -94,6 +94,18 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     public void onClick(View v) {
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if(hidden)
+            onUnsubscribe();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        onUnsubscribe();
+    }
 
     public void onUnsubscribe() {
         //取消注册，以避免内存泄露
@@ -111,11 +123,5 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
                 .subscribe(subscriber));
     }
 
-    public void addSubscription(Subscription subscription) {
-        if (mCompositeSubscription == null) {
-            mCompositeSubscription = new CompositeSubscription();
-        }
-        mCompositeSubscription.add(subscription);
-    }
 }
 
