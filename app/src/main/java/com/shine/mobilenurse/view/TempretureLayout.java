@@ -23,7 +23,7 @@ public class TempretureLayout extends LinearLayout {
     private final int MAX_LENGTH=300;
 
     private ViewDragHelper viewDragHelper;
-    private GestureDetector gestureDetector;
+//    private GestureDetector gestureDetector;
 
     public TempretureLayout(Context context) {
         this(context,null);
@@ -40,7 +40,7 @@ public class TempretureLayout extends LinearLayout {
 
     private void init(Context context){
         viewDragHelper=ViewDragHelper.create(this,1.0f,new TempretureViewDragHelperCallback());
-        gestureDetector=new GestureDetector(context,new MyGestureListener());
+//        gestureDetector=new GestureDetector(context,new MyGestureListener());
     }
 
 
@@ -78,7 +78,7 @@ public class TempretureLayout extends LinearLayout {
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         viewDragHelper.processTouchEvent(event);
-        gestureDetector.onTouchEvent(event);
+//        gestureDetector.onTouchEvent(event);
         return super.onTouchEvent(event);
     }
 
@@ -87,11 +87,11 @@ public class TempretureLayout extends LinearLayout {
 //    private float[] animMultiple=new float[]{1.0f,1.5f,2.0f};
 //
 //    private int nowX,nowY;
-
-    class  MyGestureListener extends GestureDetector.SimpleOnGestureListener{
-        //double触发
-        @Override
-        public boolean onDoubleTap(MotionEvent e) {
+//
+//    class  MyGestureListener extends GestureDetector.SimpleOnGestureListener{
+//        //double触发
+//        @Override
+//        public boolean onDoubleTap(MotionEvent e) {
 
 //            int w=getWidth();
 //            int h=getHeight();
@@ -116,27 +116,27 @@ public class TempretureLayout extends LinearLayout {
 //            animation.setFillAfter(true);
 //            startAnimation(animation);
 
-            return super.onDoubleTap(e);
-        }
-
-        //每一次点击都要触发
-        @Override
-        public boolean onSingleTapUp(MotionEvent e) {
-            return super.onSingleTapUp(e);
-        }
-
-        //double不触发在触发
-        @Override
-        public boolean onSingleTapConfirmed(MotionEvent e) {
-            return super.onSingleTapConfirmed(e);
-        }
-
-        @Override
-        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
-            LogPrint.log_d("zzz","onScroll");
-            return super.onScroll(e1, e2, distanceX, distanceY);
-        }
-
-    }
+//            return super.onDoubleTap(e);
+//        }
+//
+//        //每一次点击都要触发
+//        @Override
+//        public boolean onSingleTapUp(MotionEvent e) {
+//            return super.onSingleTapUp(e);
+//        }
+//
+//        //double不触发在触发
+//        @Override
+//        public boolean onSingleTapConfirmed(MotionEvent e) {
+//            return super.onSingleTapConfirmed(e);
+//        }
+//
+//        @Override
+//        public boolean onScroll(MotionEvent e1, MotionEvent e2, float distanceX, float distanceY) {
+//            LogPrint.log_d("zzz","onScroll");
+//            return super.onScroll(e1, e2, distanceX, distanceY);
+//        }
+//
+//    }
 
 }

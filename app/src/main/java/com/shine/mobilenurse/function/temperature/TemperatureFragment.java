@@ -11,6 +11,7 @@ import android.support.v7.widget.LinearLayoutCompat;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 
 import com.shine.mobilenurse.R;
@@ -34,6 +35,8 @@ import java.util.List;
 
 import rx.Observable;
 import rx.Subscriber;
+import uk.co.senab.photoview.PhotoView;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 
 /**
@@ -41,13 +44,14 @@ import rx.Subscriber;
  * 描述:体温单
  */
 
-public class TemperatureFragment extends BaseFragment {
+public class TemperatureFragment extends BaseFragment implements TempretureTableView.OnLoadOk {
 
     private static final String TAG = "TemperatureFragment";
 
-//    private TempretureTableView tempretureTableView;
+    private TempretureTableView tempretureTableView;
     private TempretureLayout tempretureLayout;
     private String path;
+    private Boolean isFirst;
 
     public static TemperatureFragment newInstance() {
         return new TemperatureFragment();
@@ -62,7 +66,7 @@ public class TemperatureFragment extends BaseFragment {
     protected void findViewId(View view) {
         super.findViewId(view);
 //        tempretureTableView = ViewUtil.$(view, R.id.tempretureTableView);
-        tempretureLayout=ViewUtil.$(view,R.id.tempretureLayout);
+        tempretureLayout = ViewUtil.$(view, R.id.tempretureLayout);
         tempretureLayout.setOnClickListener(this);
 //        tempretureTableView.setOnClickListener(this);
     }
@@ -73,7 +77,7 @@ public class TemperatureFragment extends BaseFragment {
         addData();
     }
 
-    private void addData(){
+    private void addData() {
         TempretureInfos infos = new TempretureInfos("肝胆外科", "03", "王三二", "82", "女", "201537746", "2016-06-07");
         List<TempretureDay> tempretureDayList = new ArrayList<>();
         for (int i = 0; i < 7; i++) {
@@ -102,13 +106,16 @@ public class TemperatureFragment extends BaseFragment {
             }
             tempretureDay.setTimeDatas(timeDatas);
         }
-        tempretureLayout.removeAllViews();
-        TempretureTableView tempretureTableView=new TempretureTableView(getActivity());
-        tempretureTableView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,1200));
+        tempretureTableView = null;
+        tempretureTableView = new TempretureTableView(getActivity());
+        isFirst = true;
+        tempretureTableView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1200));
         tempretureTableView.setName("达州市中西医院结合医院");
         tempretureTableView.setLogo(getResources().getDrawable(R.mipmap.ic_launcher));
-        tempretureTableView.setNameTextColor(Color.rgb(0,185,169));
+        tempretureTableView.setNameTextColor(Color.rgb(0, 185, 169));
         tempretureTableView.setData(infos, tempretureDayList);
+        tempretureTableView.setOnLoadOk(this);
+        tempretureLayout.removeAllViews();
         tempretureLayout.addView(tempretureTableView);
     }
 
@@ -116,7 +123,7 @@ public class TemperatureFragment extends BaseFragment {
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(!hidden){
+        if (!hidden) {
             addData();
         }
     }
@@ -125,60 +132,52 @@ public class TemperatureFragment extends BaseFragment {
     @Override
     public void onClick(View v) {
         super.onClick(v);
-        switch (v.getId()){
+        switch (v.getId()) {
             case R.id.tempretureLayout:
-
+                if (!isFirst) {
+                    PhotoView imageView = new PhotoView(getContext());
+                    imageView.setScaleType(ImageView.ScaleType.CENTER);
+                    imageView.setImageBitmap(createViewBitmap(tempretureTableView));
+                    imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
+                        @Override
+                        public void onPhotoTap(View view, float x, float y) {
+                            addData();
+                        }
+                    });
+                    tempretureLayout.removeAllViews();
+                    tempretureLayout.addView(imageView);
+                }
                 break;
         }
     }
 
     private Bitmap createViewBitmap(View v) {
-        v.clearFocus();
-        v.setPressed(false);
-
-        boolean willNotCache = v.willNotCacheDrawing();
-        v.setWillNotCacheDrawing(false);
-
-        // Reset the drawing cache background color to fully transparent
-        // for the duration of this operation
-        int color = v.getDrawingCacheBackgroundColor();
-        v.setDrawingCacheBackgroundColor(0);
-
-        if (color != 0) {
-            v.destroyDrawingCache();
-        }
-        v.buildDrawingCache();
-        Bitmap cacheBitmap = v.getDrawingCache();
-        if (cacheBitmap == null) {
-            return null;
-        }
-        Bitmap bitmap = Bitmap.createBitmap(cacheBitmap);
-        // Restore the view
-        v.destroyDrawingCache();
-        v.setWillNotCacheDrawing(willNotCache);
-        v.setDrawingCacheBackgroundColor(color);
+        Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
+                Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        v.draw(canvas);
         return bitmap;
     }
 
-
     /**
      * 图片保存
-     * @param bm 保存的图片
+     *
+     * @param bm   保存的图片
      * @param path 路径
      * @param name 名字
      * @return
      */
-    private boolean saveBitmap(Bitmap bm,String path,String name)  {
+    private boolean saveBitmap(Bitmap bm, String path, String name) {
 
         File filePath = new File(path);
         if (!filePath.exists())
             filePath.mkdirs();
-
-        File f=new File(path,name);
-        FileOutputStream out=null;
+        String fileN = path + File.separatorChar + name;
+        File f = new File(fileN);
+        FileOutputStream out = null;
         try {
             out = new FileOutputStream(f);
-            bm.compress(Bitmap.CompressFormat.PNG, 90, out);
+            bm.compress(Bitmap.CompressFormat.JPEG, 90, out);
             out.flush();
             out.close();
         } catch (FileNotFoundException e) {
@@ -187,8 +186,8 @@ public class TemperatureFragment extends BaseFragment {
         } catch (IOException e) {
             e.printStackTrace();
             return false;
-        }finally {
-            if(out!=null)
+        } finally {
+            if (out != null)
                 try {
                     out.close();
                 } catch (IOException e) {
@@ -196,9 +195,24 @@ public class TemperatureFragment extends BaseFragment {
                     return false;
                 }
         }
-
         return true;
 
     }
 
+    @Override
+    public void loadOk(View view) {
+        if (isFirst) {
+            isFirst = false;
+//            new Thread(new Runnable() {
+//                @Override
+//                public void run() {
+//                    String path = Environment.getExternalStorageDirectory() + File.separator + "MobileNurse";
+//                    String name = "Temperature.jpeg";
+//                    saveBitmap(createViewBitmap(tempretureTableView), path, name);
+//                }
+//            }).start();
+        }
+
+
+    }
 }

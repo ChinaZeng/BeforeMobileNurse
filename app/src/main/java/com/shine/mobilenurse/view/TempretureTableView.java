@@ -126,7 +126,7 @@ public class TempretureTableView extends View {
 
     public TempretureTableView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-            initTypedArray(context, attrs);
+        initTypedArray(context, attrs);
         init(context);
     }
 
@@ -230,15 +230,13 @@ public class TempretureTableView extends View {
      * @param canvas
      */
     private void drawTop(Canvas canvas) {
-
+        tempH = 0.0f;
         //1.将Drawable装换为Bitmap
         BitmapDrawable bd = (BitmapDrawable) logo;
         Bitmap logoBitmap = bd.getBitmap();
-
         //2.得到Bitmap的宽高
 //        int logoBW = logoBitmap.getWidth();
 //        int logoBH = logoBitmap.getHeight();
-
         int logoBW = LOGO_W_AND_H;
         int logoBH = LOGO_W_AND_H;
 
@@ -398,6 +396,7 @@ public class TempretureTableView extends View {
         }
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawPath(path, paint);
+        path.close();
     }
 
     /**
@@ -430,18 +429,21 @@ public class TempretureTableView extends View {
         }
         paint.setStyle(Paint.Style.STROKE);
         canvas.drawPath(path, paint);
+        path.close();
     }
 
     /**
      * 计算出要画的脉搏和温度 点位置
      */
     private void comTempAndMaiBoPointList() {
+
+        allTemprePointList.clear();
+        allMaiBoPointList.clear();
+
         for (int i = 0; i < tempretureDayList.size(); i++) {
             List<Table> dayTables = allDayTableList.get(i);
-
             float startX = dayTables.get(0).getX();
             float startY = dayTables.get(0).getY() + dayTables.get(0).getH();
-
             //一个时间段一格多宽
             float taw = dayW / dayItemTimeCount;
             TempretureDay.TimeData[] timeDatas = tempretureDayList.get(i).getTimeDatas();
@@ -450,14 +452,10 @@ public class TempretureTableView extends View {
                 List<FloatPoint> maiBoDaylist = new ArrayList<>();
                 //每一格代表的温度值
                 float a = 1.0f / maiBoAndTempGeCount;
-
                 //每一格代表的脉搏值
                 float b = (float) (maiBoEnd - maiBoStart) / (float) ((tempEnd - tempStart) * maiBoAndTempGeCount);
-
                 //每一个代表的时间值
                 float c = (float) (endTime - startTime) / (float) (dayItemTimeCount);
-
-
                 for (TempretureDay.TimeData timeData : timeDatas) {
                     if (timeData != null) {
                         int timeNum = timeData.getTimeNum();
@@ -665,9 +663,7 @@ public class TempretureTableView extends View {
      * @return
      */
     private List<Table> comTimeItemData() {
-
-
-
+        allDayTableList.clear();
         Paint paint = new Paint();
         paint.setTextSize(tabCommonFontSize);
         float aFontH = meauTextHeight(paint, "时  间");
@@ -1243,7 +1239,6 @@ public class TempretureTableView extends View {
     }
 
 
-
     public void setInfoAndLogoPadding(float infoAndLogoPadding) {
         this.infoAndLogoPadding = infoAndLogoPadding;
     }
@@ -1319,8 +1314,8 @@ public class TempretureTableView extends View {
         return textHeight;
     }
 
-    public float getTempH(){
-        return  tempH;
+    public float getTempH() {
+        return tempH;
     }
 
     /**
