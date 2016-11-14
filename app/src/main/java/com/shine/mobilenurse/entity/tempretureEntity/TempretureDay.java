@@ -40,6 +40,7 @@ public class TempretureDay {
         this.date = date;
         this.inToHospitalNum = inToHospitalNum;
         this.cutNum = cutNum;
+
         this.inToNum = inToNum;
         this.outNum = outNum;
         this.shitNumByDay = shitNumByDay;
@@ -74,6 +75,7 @@ public class TempretureDay {
     public void setCutNum(int cutNum) {
         this.cutNum = cutNum;
     }
+
 
     public String getInToNum() {
         return inToNum;
@@ -155,18 +157,31 @@ public class TempretureDay {
         private int pulse;
         //体温
         private float temperature;
+        //口温
+        private float mouthTemperature;
+        //腋温
+        private float axillaryTemperature;
+        //肛温
+        private float analTemperature;
         //呼吸 次/秒
         private int braveNum;
+        //生命体征
+        private String vitalSigns;
 
         public TimeData() {
         }
 
-        public TimeData(int timeNum, int pulse, float temperature, int braveNum) {
+        public TimeData(int timeNum, int pulse, float temperature, float mouthTemperature, float axillaryTemperature, float analTemperature, int braveNum, String vitalSigns) {
             this.timeNum = timeNum;
             this.pulse = pulse;
             this.temperature = temperature;
+            this.mouthTemperature = mouthTemperature;
+            this.axillaryTemperature = axillaryTemperature;
+            this.analTemperature = analTemperature;
             this.braveNum = braveNum;
+            this.vitalSigns = vitalSigns;
         }
+
 
         public int getTimeNum() {
             return timeNum;
@@ -192,6 +207,30 @@ public class TempretureDay {
             this.temperature = temperature;
         }
 
+        public float getMouthTemperature() {
+            return mouthTemperature;
+        }
+
+        public void setMouthTemperature(float mouthTemperature) {
+            this.mouthTemperature = mouthTemperature;
+        }
+
+        public float getAxillaryTemperature() {
+            return axillaryTemperature;
+        }
+
+        public void setAxillaryTemperature(float axillaryTemperature) {
+            this.axillaryTemperature = axillaryTemperature;
+        }
+
+        public float getAnalTemperature() {
+            return analTemperature;
+        }
+
+        public void setAnalTemperature(float analTemperature) {
+            this.analTemperature = analTemperature;
+        }
+
         public int getBraveNum() {
             return braveNum;
         }
@@ -199,10 +238,18 @@ public class TempretureDay {
         public void setBraveNum(int braveNum) {
             this.braveNum = braveNum;
         }
+
+        public String getVitalSigns() {
+            return vitalSigns;
+        }
+
+        public void setVitalSigns(String vitalSigns) {
+            this.vitalSigns = vitalSigns;
+        }
     }
 
     //血压对象
-     public class Blood {
+    public class Blood {
         //高压
         private float highBlood;
         //低压

@@ -101,10 +101,28 @@ public class TempretureTableView extends View {
     private int tempStart;
     //体温结束提示数值
     private int tempEnd;
+
+    //是否显示体温
+    private Boolean isShowTempre;
+    //是否显示口温
+    private Boolean isShowMouthTempre;
+    //是否显示腋温
+    private Boolean isShowAxillaryTempre;
+    //是否显示肛温
+    private Boolean isShowAnalTempre;
+    //是否显示脉搏
+    private Boolean isShowMaiBo;
+
     //记录所有时间段的tabale信息 里面一个list代表一天的tab信息
     private List<List<Table>> allDayTableList = new ArrayList<>();
 
-    //记录所有时间段的温度信息 里面一个list代表一天的温度
+    //记录所有时间段的口温信息 里面一个list代表一天的口温
+    private List<List<FloatPoint>> allMouthTemprePointList = new ArrayList<>();
+    //记录所有时间段的腋温信息 里面一个list代表一天的腋温
+    private List<List<FloatPoint>> allAxillaryTemprePointList = new ArrayList<>();
+    //记录所有时间段的肛温信息 里面一个list代表一天的肛温
+    private List<List<FloatPoint>> allAnalTemprePointList = new ArrayList<>();
+    //记录所有时间段的体温信息 里面一个list代表一天的体温
     private List<List<FloatPoint>> allTemprePointList = new ArrayList<>();
     //脉搏point集合
     //记录所有时间段的温度信息 里面一个list代表一天的温度
@@ -184,6 +202,13 @@ public class TempretureTableView extends View {
             tempHintStrings[i] = tempEnd - i + "";
             maiBoHintStrings[i] = maiBoEnd - i * c2 + "";
         }
+
+        isShowTempre = a.getBoolean(R.styleable.TempretureTableView_isShowTempre, true);
+        isShowAxillaryTempre = a.getBoolean(R.styleable.TempretureTableView_isShowAxillaryTempre, true);
+        isShowMouthTempre = a.getBoolean(R.styleable.TempretureTableView_isShowMouthTempre, true);
+        isShowAnalTempre = a.getBoolean(R.styleable.TempretureTableView_isShowAnalTempre, true);
+        isShowMaiBo = a.getBoolean(R.styleable.TempretureTableView_isShowMaiBo, true);
+
         a.recycle();
         setBackgroundColor(Color.WHITE);
     }
@@ -363,24 +388,140 @@ public class TempretureTableView extends View {
         drawTableList(canvas, comTimeItemData());
         drawMidTable(canvas);
         comTempAndMaiBoPointList();
-        drawTempre(canvas);
+        drawMouthTempre(canvas);
+        drawAxillaryTempre(canvas);
+        drawAnalTempre(canvas);
         drawMaiBo(canvas);
+//        drawTempre(canvas);
     }
 
     /**
-     * 画温度曲线
+     * 画口温曲线
+     *
+     * @param canvas
+     */
+    private void drawMouthTempre(Canvas canvas) {
+        if (!isShowMouthTempre)
+            return;
+        Paint paint = new Paint();
+        Path path = new Path();
+        paint.setColor(Color.BLUE);
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.FILL);
+        boolean t = false;
+        for (int i = 0; i < allMouthTemprePointList.size(); i++) {
+            List<FloatPoint> points = allMouthTemprePointList.get(i);
+            if (points != null && points.size() > 0) {
+                for (int j = 0; j < points.size(); j++) {
+                    FloatPoint point = points.get(j);
+                    if (j == 0 && !t) {
+                        path.moveTo(point.getX(), point.getY());
+                        t = true;
+                    } else {
+                        path.lineTo(point.getX(), point.getY());
+                    }
+                    canvas.drawCircle(point.getX(), point.getY(), 3, paint);
+                }
+            }
+        }
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawPath(path, paint);
+        path.close();
+    }
+
+
+    /**
+     * 画提体温曲线
      *
      * @param canvas
      */
     private void drawTempre(Canvas canvas) {
+        if (!isShowTempre)
+            return;
+
         Paint paint = new Paint();
         Path path = new Path();
-        paint.setColor(Color.RED);
+        paint.setColor(Color.BLUE);
         paint.setAntiAlias(true);
         paint.setStyle(Paint.Style.FILL);
         boolean t = false;
         for (int i = 0; i < allTemprePointList.size(); i++) {
             List<FloatPoint> points = allTemprePointList.get(i);
+            if (points != null && points.size() > 0) {
+                for (int j = 0; j < points.size(); j++) {
+                    FloatPoint point = points.get(j);
+                    if (j == 0 && !t) {
+                        path.moveTo(point.getX(), point.getY());
+                        t = true;
+                    } else {
+                        path.lineTo(point.getX(), point.getY());
+                    }
+                    canvas.drawCircle(point.getX(), point.getY(), 3, paint);
+                }
+            }
+        }
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawPath(path, paint);
+        path.close();
+    }
+
+
+    /**
+     * 画腋温曲线
+     *
+     * @param canvas
+     */
+    private void drawAxillaryTempre(Canvas canvas) {
+
+        if (!isShowAxillaryTempre)
+            return;
+
+        Paint paint = new Paint();
+        Path path = new Path();
+        paint.setAntiAlias(true);
+        paint.setColor(Color.BLUE);
+        paint.setStyle(Paint.Style.FILL);
+        boolean t = false;
+        for (int i = 0; i < allAxillaryTemprePointList.size(); i++) {
+            List<FloatPoint> points = allAxillaryTemprePointList.get(i);
+            if (points != null && points.size() > 0) {
+                for (int j = 0; j < points.size(); j++) {
+                    FloatPoint point = points.get(j);
+                    if (j == 0 && !t) {
+                        path.moveTo(point.getX(), point.getY());
+                        t = true;
+                    } else {
+                        path.lineTo(point.getX(), point.getY());
+                    }
+                    canvas.drawLine(point.getX() - 3, point.getY() - 3, point.getX() + 3, point.getY() + 3, paint);
+                    canvas.drawLine(point.getX() - 3, point.getY() + 3, point.getX() + 3, point.getY() - 3, paint);
+                }
+            }
+        }
+        paint.setStyle(Paint.Style.STROKE);
+        canvas.drawPath(path, paint);
+        path.close();
+    }
+
+
+    /**
+     * 画肛温曲线
+     *
+     * @param canvas
+     */
+    private void drawAnalTempre(Canvas canvas) {
+
+        if (!isShowAnalTempre)
+            return;
+
+        Paint paint = new Paint();
+        Path path = new Path();
+        paint.setColor(Color.BLUE);
+        paint.setAntiAlias(true);
+        paint.setStyle(Paint.Style.STROKE);
+        boolean t = false;
+        for (int i = 0; i < allAnalTemprePointList.size(); i++) {
+            List<FloatPoint> points = allAnalTemprePointList.get(i);
             if (points != null && points.size() > 0) {
                 for (int j = 0; j < points.size(); j++) {
                     FloatPoint point = points.get(j);
@@ -405,10 +546,14 @@ public class TempretureTableView extends View {
      * @param canvas
      */
     private void drawMaiBo(Canvas canvas) {
+
+        if (!isShowMaiBo)
+            return;
+
         Paint paint = new Paint();
         Path path = new Path();
         paint.setAntiAlias(true);
-        paint.setColor(Color.BLUE);
+        paint.setColor(Color.RED);
         paint.setStyle(Paint.Style.FILL);
         boolean t = false;
         for (int i = 0; i < allMaiBoPointList.size(); i++) {
@@ -422,8 +567,7 @@ public class TempretureTableView extends View {
                     } else {
                         path.lineTo(point.getX(), point.getY());
                     }
-                    canvas.drawLine(point.getX() - 3, point.getY() - 3, point.getX() + 3, point.getY() + 3, paint);
-                    canvas.drawLine(point.getX() - 3, point.getY() + 3, point.getX() + 3, point.getY() - 3, paint);
+                    canvas.drawCircle(point.getX(), point.getY(), 3, paint);
                 }
             }
         }
@@ -432,13 +576,17 @@ public class TempretureTableView extends View {
         path.close();
     }
 
+
     /**
      * 计算出要画的脉搏和温度 点位置
      */
     private void comTempAndMaiBoPointList() {
 
         allTemprePointList.clear();
+        allMouthTemprePointList.clear();
         allMaiBoPointList.clear();
+        allAnalTemprePointList.clear();
+        allAxillaryTemprePointList.clear();
 
         for (int i = 0; i < tempretureDayList.size(); i++) {
             List<Table> dayTables = allDayTableList.get(i);
@@ -449,12 +597,15 @@ public class TempretureTableView extends View {
             TempretureDay.TimeData[] timeDatas = tempretureDayList.get(i).getTimeDatas();
             if (timeDatas != null) {
                 List<FloatPoint> tempreDaylist = new ArrayList<>();
-                List<FloatPoint> maiBoDaylist = new ArrayList<>();
+                List<FloatPoint> mouthTempreDaylist = new ArrayList<>();//一天的口温
+                List<FloatPoint> axillaryTempreDayList = new ArrayList<>();//一天的腋温
+                List<FloatPoint> AnalTempreDayList = new ArrayList<>();//一天的肛温
+                List<FloatPoint> maiBoDaylist = new ArrayList<>();//一天的脉搏
                 //每一格代表的温度值
                 float a = 1.0f / maiBoAndTempGeCount;
                 //每一格代表的脉搏值
                 float b = (float) (maiBoEnd - maiBoStart) / (float) ((tempEnd - tempStart) * maiBoAndTempGeCount);
-                //每一个代表的时间值
+                //每一格代表的时间值
                 float c = (float) (endTime - startTime) / (float) (dayItemTimeCount);
                 for (TempretureDay.TimeData timeData : timeDatas) {
                     if (timeData != null) {
@@ -462,16 +613,42 @@ public class TempretureTableView extends View {
                         if (timeNum != 0) {
                             //体温和脉搏的X坐标
                             float x = startX + (timeNum - startTime) / c * taw;
-                            //计算体温的的Y点坐标
-                            if (timeData.getTemperature() != 0) {
+
+                            //计算体温温的的Y点坐标
+                            if (timeData.getTemperature() != 0 && isShowTempre) {
                                 //（最大温度-当前温度）*
-                                float y = startY + (((tempEnd - timeData.getTemperature()) / a) * timeItemW);
-                                FloatPoint point = new FloatPoint(x, y);
+                                float my = startY + (((tempEnd - timeData.getTimeNum()) / a) * timeItemW);
+                                FloatPoint point = new FloatPoint(x, my);
                                 tempreDaylist.add(point);
                             }
 
+
+                            //计算口温的的Y点坐标
+                            if (timeData.getMouthTemperature() != 0 && isShowMouthTempre) {
+                                //（最大温度-当前温度）*
+                                float my = startY + (((tempEnd - timeData.getMouthTemperature()) / a) * timeItemW);
+                                FloatPoint point = new FloatPoint(x, my);
+                                mouthTempreDaylist.add(point);
+                            }
+
+                            //计算腋温的的Y点坐标
+                            if (timeData.getAxillaryTemperature() != 0 && isShowAxillaryTempre) {
+                                //（最大温度-当前温度）*
+                                float my = startY + (((tempEnd - timeData.getAxillaryTemperature()) / a) * timeItemW);
+                                FloatPoint point = new FloatPoint(x, my);
+                                axillaryTempreDayList.add(point);
+                            }
+
+                            //计算肛温的的Y点坐标
+                            if (timeData.getAnalTemperature() != 0 && isShowAnalTempre) {
+                                //（最大温度-当前温度）*
+                                float my = startY + (((tempEnd - timeData.getAnalTemperature()) / a) * timeItemW);
+                                FloatPoint point = new FloatPoint(x, my);
+                                AnalTempreDayList.add(point);
+                            }
+
                             //计算脉搏的Y点坐标
-                            if (timeData.getPulse() != 0) {
+                            if (timeData.getPulse() != 0 && isShowMaiBo) {
                                 float y = startY + ((maiBoEnd - timeData.getPulse()) / b) * timeItemW;
                                 FloatPoint point = new FloatPoint(x, y);
                                 maiBoDaylist.add(point);
@@ -480,6 +657,9 @@ public class TempretureTableView extends View {
                     }
                 }
                 allTemprePointList.add(tempreDaylist);
+                allMouthTemprePointList.add(mouthTempreDaylist);
+                allAxillaryTemprePointList.add(axillaryTempreDayList);
+                allAnalTemprePointList.add(AnalTempreDayList);
                 allMaiBoPointList.add(maiBoDaylist);
             }
         }
@@ -502,14 +682,15 @@ public class TempretureTableView extends View {
             for (int j = 0; j < dayTabList.size(); j++) {
                 Table table = dayTabList.get(j);
                 if (j == 0) {
-                    paint.setColor(Color.RED);
+//                    paint.setColor(Color.RED);
+                    paint.setColor(Color.BLACK);
                 } else {
                     paint.setColor(Color.GRAY);
                 }
                 canvas.drawLine(table.getX(), table.getY() + table.getH(), table.getX(), table.getY() + table.getH() + midTabH, paint);
                 //画最后一根线
                 if (j == dayTabList.size() - 1) {
-                    paint.setColor(Color.RED);
+//                    paint.setColor(Color.RED);
                     canvas.drawLine(table.getX() + table.getW(), table.getY() + table.getH(), table.getX() + table.getW(), table.getY() + table.getH() + midTabH, paint);
                 }
             }

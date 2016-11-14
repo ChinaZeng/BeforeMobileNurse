@@ -43,7 +43,11 @@
         <attr name="maiBoAndTempGeCount" format="integer" />
         <attr name="tempStart" format="integer" />
         <attr name="tempEnd" format="integer" />
-
+        <attr name="isShowTempre" format="boolean" />
+        <attr name="isShowMouthTempre" format="boolean" />
+        <attr name="isShowAxillaryTempre" format="boolean" />
+        <attr name="isShowAnalTempre" format="boolean" />
+        <attr name="isShowMaiBo" format="boolean" />
 
     </declare-styleable>
 

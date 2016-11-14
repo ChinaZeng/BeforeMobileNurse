@@ -7,13 +7,21 @@
     <!-- 振动 -->
     <uses-permission android:name="android.permission.VIBRATE" />
 
+    <!--nfc功能-->
+    <uses-permission android:name="android.permission.NFC" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
 
+
+    <uses-feature
+        android:name="android.hardware.nfc"
+        android:required="true"></uses-feature>
+
     <application
-        android:allowBackup="true"
         android:name=".MobileEnurseApp"
+        android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme">
@@ -24,9 +32,9 @@
 
         </activity>
 
-        <activity android:name=".function.common.ImageActivity"
-            android:theme="@style/AppTheme.NoActionBar"
-            />
+        <activity
+            android:name=".function.common.ImageActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
             android:name=".function.common.ScanActivity"
@@ -38,6 +46,22 @@
         <activity
             android:name=".function.login.LoginActivity"
             android:screenOrientation="portrait">
+
+            <intent-filter>
+                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
+                <data android:mimeType="text/plain" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.TAG_DISCOVERED"></action>
+                <!--<category android:name="android.intent.category.DEFAULT"></category>-->
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.nfc.action.TECH_DISCOVERED" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.nfc.action.TECH_DISCOVERED"
+                android:resource="@xml/nfc_tech_filter" />
 
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
