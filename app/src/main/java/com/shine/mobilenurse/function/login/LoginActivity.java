@@ -13,9 +13,14 @@ import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
 import com.shine.mobilenurse.R;
+import com.shine.mobilenurse.eventBusMessage.LoginMessage;
 import com.shine.mobilenurse.function.UI;
 import com.shine.mobilenurse.base.BaseActivity;
 import com.shine.mobilenurse.utils.ViewUtil;
+
+import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
+import org.greenrobot.eventbus.ThreadMode;
 
 import java.io.UnsupportedEncodingException;
 
@@ -30,6 +35,7 @@ public class LoginActivity extends BaseActivity {
 
     private final static int SCAN_LOGIN_REQUEST_CODE = 0x001;
     private final static String[] spinnerArray = new String[]{"心血管内科护理单元", "耳鼻喉科护理单元"};
+
 
     @Override
     protected int getLayoutId() {
@@ -75,16 +81,18 @@ public class LoginActivity extends BaseActivity {
 
     @Override
     protected void onPause() {
-        super.onPause();
+        EventBus.getDefault().unregister(this);
         if (nfcAdapter != null)
             nfcAdapter.disableForegroundDispatch(this);
+        super.onPause();
     }
 
     @Override
     protected void onResume() {
-        super.onResume();
+        EventBus.getDefault().register(this);
         if (nfcAdapter != null)
             nfcAdapter.enableForegroundDispatch(this, pendingIntent, intentFiltersArray, techListsArray);
+        super.onResume();
     }
 
     @Override
@@ -110,6 +118,18 @@ public class LoginActivity extends BaseActivity {
      * @param view
      */
     public void login(View view) {
+        UI.showMainActivity(this);
+        this.finish();
+    }
+
+    /**
+     * 扫描枪登陆 EventBus传递
+     *
+     * @param
+     */
+    @Subscribe(threadMode = ThreadMode.MAIN)
+    public void onLoginMessage(LoginMessage loginMessage) {
+        UI.showToast(this, loginMessage.getLoginCode());
         UI.showMainActivity(this);
         this.finish();
     }

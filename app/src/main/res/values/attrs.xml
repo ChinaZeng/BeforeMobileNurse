@@ -48,6 +48,18 @@
         <attr name="isShowAxillaryTempre" format="boolean" />
         <attr name="isShowAnalTempre" format="boolean" />
         <attr name="isShowMaiBo" format="boolean" />
+        <attr name="isShowInToHospitalNum" format="boolean"/>
+        <attr name="isShowCutNum" format="boolean"/>
+        <attr name="isShowBraveNum" format="boolean"/>
+        <attr name="isShowbloods" format="boolean"/>
+        <attr name="isShowInToNum" format="boolean"/>
+        <attr name="isShowOutNum" format="boolean"/>
+        <attr name="isShowShitNumByDay" format="boolean"/>
+        <attr name="isShowWeight" format="boolean"/>
+        <attr name="isShowHeight" format="boolean"/>
+        <attr name="isShowMaiXiang" format="boolean"/>
+        <attr name="isShowSheTai" format="boolean"/>
+
 
     </declare-styleable>
 

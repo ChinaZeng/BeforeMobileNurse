@@ -9,7 +9,11 @@ import android.os.Message;
 import android.util.Log;
 
 import com.shine.mobilenurse.MobileEnurseApp;
+import com.shine.mobilenurse.eventBusMessage.LoginMessage;
 import com.shine.mobilenurse.function.UI;
+import com.shine.mobilenurse.utils.LogPrint;
+
+import org.greenrobot.eventbus.EventBus;
 
 
 /**
@@ -39,7 +43,8 @@ public class ScanHandler extends Handler {
 
             case Scanner.BARCODE_READ: {
                 String m = (String) msg.obj;
-                UI.showToast(MobileEnurseApp.getInstance(), "读取到的数据:" + m);
+                LogPrint.log_d("扫描枪收到的数据：" + m);
+                EventBus.getDefault().post(new LoginMessage(m));
                 play();
                 break;
             }

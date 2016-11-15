@@ -26,6 +26,7 @@ import com.shine.mobilenurse.view.TempretureTableView;
 import java.util.ArrayList;
 import java.util.List;
 
+import uk.co.senab.photoview.IPhotoView;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -86,7 +87,7 @@ public class TemperatureFragment extends BaseFragment implements TempretureTable
                 } else if (j % count == 3) {
                     timeData = tempretureDay.new TimeData(15, 85, 40.5f, 36.0f, 37.0f, 39.0f, 80, "");
                 } else if (j % count == 4) {
-                    timeData = tempretureDay.new TimeData(20, 95, 40.5f, 35.0f, 36.5f,38.0f, 100, "");
+                    timeData = tempretureDay.new TimeData(20, 95, 40.5f, 35.0f, 36.5f, 38.0f, 100, "");
                 } else if (j % count == 5) {
                     timeData = tempretureDay.new TimeData(23, 90, 40.5f, 34.5f, 36.5f, 36.5f, 90, "");
                 }
@@ -96,7 +97,7 @@ public class TemperatureFragment extends BaseFragment implements TempretureTable
             tempretureDay.setTimeDatas(timeDatas);
         }
         tempretureTableView = null;
-        tempretureTableView = new TempretureTableView(getActivity());
+        tempretureTableView = new TempretureTableView(getContext());
         isLoadOk = false;
         tempretureTableView.setLayoutParams(new LinearLayoutCompat.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, 1200));
         tempretureTableView.setName("达州市中西医院结合医院");
@@ -143,13 +144,13 @@ public class TemperatureFragment extends BaseFragment implements TempretureTable
     @Override
     public void OnDoubleClick(View view) {
         if (isLoadOk) {
-            PhotoView imageView = new PhotoView(getContext());
+            final PhotoView imageView = new PhotoView(getContext());
             imageView.setScaleType(ImageView.ScaleType.CENTER);
             imageView.setImageBitmap(createViewBitmap(tempretureTableView));
             imageView.setOnPhotoTapListener(new PhotoViewAttacher.OnPhotoTapListener() {
                 @Override
                 public void onPhotoTap(View view, float x, float y) {
-                    addData();
+                    imageView.setScale(IPhotoView.DEFAULT_MIN_SCALE);
                 }
             });
             tempretureLayout.removeAllViews();

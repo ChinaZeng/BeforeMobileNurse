@@ -50,6 +50,19 @@ public class LogPrint {
 
 
     /**
+     * 打印输出Debug调试信息
+     *
+     * @param msg
+     * @return
+     */
+    public static void log_d(String msg) {
+        if (logPrint_key) {
+            Log.d(TAG, msg);
+        }
+    }
+
+
+    /**
      * 答应输出提示信息information
      *
      * @param tag

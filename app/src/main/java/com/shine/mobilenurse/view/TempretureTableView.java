@@ -112,6 +112,29 @@ public class TempretureTableView extends View {
     private Boolean isShowAnalTempre;
     //是否显示脉搏
     private Boolean isShowMaiBo;
+    //是否显示住院天数
+    private Boolean isShowInToHospitalNum;
+    //是否显示手术后天数
+    private Boolean isShowCutNum;
+    //是否显示呼吸
+    private Boolean isShowBraveNum;
+    //是否显示血压
+    private Boolean isShowbloods;
+    //是否显示入量
+    private Boolean isShowInToNum;
+    //是否显示出量
+    private Boolean isShowOutNum;
+    //是否显示大便次数
+    private Boolean isShowShitNumByDay;
+    //是否显示体重
+    private Boolean isShowWeight;
+    //是否显示身高
+    private Boolean isShowHeight;
+    //是否显示脉象
+    private Boolean isShowMaiXiang;
+    //是否显示舌苔
+    private Boolean isShowSheTai;
+
 
     //记录所有时间段的tabale信息 里面一个list代表一天的tab信息
     private List<List<Table>> allDayTableList = new ArrayList<>();
@@ -203,15 +226,27 @@ public class TempretureTableView extends View {
             maiBoHintStrings[i] = maiBoEnd - i * c2 + "";
         }
 
-        isShowTempre = a.getBoolean(R.styleable.TempretureTableView_isShowTempre, true);
+        isShowTempre = a.getBoolean(R.styleable.TempretureTableView_isShowTempre, false);
         isShowAxillaryTempre = a.getBoolean(R.styleable.TempretureTableView_isShowAxillaryTempre, true);
         isShowMouthTempre = a.getBoolean(R.styleable.TempretureTableView_isShowMouthTempre, true);
         isShowAnalTempre = a.getBoolean(R.styleable.TempretureTableView_isShowAnalTempre, true);
         isShowMaiBo = a.getBoolean(R.styleable.TempretureTableView_isShowMaiBo, true);
+        isShowInToHospitalNum = a.getBoolean(R.styleable.TempretureTableView_isShowInToHospitalNum, true);
+        isShowCutNum = a.getBoolean(R.styleable.TempretureTableView_isShowCutNum, true);
+        isShowBraveNum = a.getBoolean(R.styleable.TempretureTableView_isShowBraveNum, true);
+        isShowbloods = a.getBoolean(R.styleable.TempretureTableView_isShowbloods, true);
+        isShowInToNum = a.getBoolean(R.styleable.TempretureTableView_isShowInToNum, true);
+        isShowOutNum = a.getBoolean(R.styleable.TempretureTableView_isShowOutNum, true);
+        isShowShitNumByDay = a.getBoolean(R.styleable.TempretureTableView_isShowShitNumByDay, true);
+        isShowWeight = a.getBoolean(R.styleable.TempretureTableView_isShowWeight, true);
+        isShowHeight = a.getBoolean(R.styleable.TempretureTableView_isShowHeight, true);
+        isShowMaiXiang = a.getBoolean(R.styleable.TempretureTableView_isShowMaiXiang, true);
+        isShowSheTai = a.getBoolean(R.styleable.TempretureTableView_isShowSheTai, true);
 
         a.recycle();
         setBackgroundColor(Color.WHITE);
     }
+
 
 //    @Override
 //    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
@@ -362,18 +397,31 @@ public class TempretureTableView extends View {
         if (tempretureDayList == null || tempretureDayList.size() == 0)
             return;
         drawTableList(canvas, comDataList());
-        drawTableList(canvas, comInToHospitalNumList());
-        drawTableList(canvas, comcutNumList());
+        if (isShowInToHospitalNum)
+            drawTableList(canvas, comInToHospitalNumList());
+        if (isShowCutNum)
+            drawTableList(canvas, comcutNumList());
+
         drawMid(canvas);
-        drawTableList(canvas, comBraveList());
-        drawTableList(canvas, comBloodsList());
-        drawTableList(canvas, comInToNumList());
-        drawTableList(canvas, comOutNumList());
-        drawTableList(canvas, comShitNumByDayList());
-        drawTableList(canvas, comHeightList());
-        drawTableList(canvas, comWeightList());
-        drawTableList(canvas, comMaiXiangList());
-        drawTableList(canvas, comSheTaiList());
+
+        if (isShowBraveNum)
+            drawTableList(canvas, comBraveList());
+        if (isShowbloods)
+            drawTableList(canvas, comBloodsList());
+        if (isShowInToNum)
+            drawTableList(canvas, comInToNumList());
+        if (isShowOutNum)
+            drawTableList(canvas, comOutNumList());
+        if (isShowShitNumByDay)
+            drawTableList(canvas, comShitNumByDayList());
+        if (isShowHeight)
+            drawTableList(canvas, comHeightList());
+        if (isShowWeight)
+            drawTableList(canvas, comWeightList());
+        if (isShowMaiXiang)
+            drawTableList(canvas, comMaiXiangList());
+        if (isShowSheTai)
+            drawTableList(canvas, comSheTaiList());
 
         if (onLoadOk != null)
             onLoadOk.loadOk(this);
@@ -388,12 +436,15 @@ public class TempretureTableView extends View {
         drawTableList(canvas, comTimeItemData());
         drawMidTable(canvas);
         comTempAndMaiBoPointList();
+        drawTempre(canvas);
         drawMouthTempre(canvas);
         drawAxillaryTempre(canvas);
         drawAnalTempre(canvas);
         drawMaiBo(canvas);
-//        drawTempre(canvas);
     }
+
+
+
 
     /**
      * 画口温曲线
@@ -617,7 +668,7 @@ public class TempretureTableView extends View {
                             //计算体温温的的Y点坐标
                             if (timeData.getTemperature() != 0 && isShowTempre) {
                                 //（最大温度-当前温度）*
-                                float my = startY + (((tempEnd - timeData.getTimeNum()) / a) * timeItemW);
+                                float my = startY + (((tempEnd - timeData.getTemperature()) / a) * timeItemW);
                                 FloatPoint point = new FloatPoint(x, my);
                                 tempreDaylist.add(point);
                             }
@@ -1448,9 +1499,6 @@ public class TempretureTableView extends View {
         this.bloodsCount = bloodsCount;
     }
 
-    public void setDayItemTimeCount(int dayItemTimeCount) {
-        this.dayItemTimeCount = dayItemTimeCount;
-    }
 
     public void setTimeLag(int timeLag) {
         this.timeLag = timeLag;
@@ -1478,6 +1526,190 @@ public class TempretureTableView extends View {
 
     public void setTempStart(int tempStart) {
         this.tempStart = tempStart;
+    }
+
+    public Boolean getShowTempre() {
+        return isShowTempre;
+    }
+
+    public void setShowTempre(Boolean showTempre) {
+        isShowTempre = showTempre;
+    }
+
+    public Boolean getShowMouthTempre() {
+        return isShowMouthTempre;
+    }
+
+    public void setShowMouthTempre(Boolean showMouthTempre) {
+        isShowMouthTempre = showMouthTempre;
+    }
+
+    public Boolean getShowAxillaryTempre() {
+        return isShowAxillaryTempre;
+    }
+
+    public void setShowAxillaryTempre(Boolean showAxillaryTempre) {
+        isShowAxillaryTempre = showAxillaryTempre;
+    }
+
+    public Boolean getShowAnalTempre() {
+        return isShowAnalTempre;
+    }
+
+    public void setShowAnalTempre(Boolean showAnalTempre) {
+        isShowAnalTempre = showAnalTempre;
+    }
+
+    public Boolean getShowMaiBo() {
+        return isShowMaiBo;
+    }
+
+    public void setShowMaiBo(Boolean showMaiBo) {
+        isShowMaiBo = showMaiBo;
+    }
+
+    public Boolean getShowInToHospitalNum() {
+        return isShowInToHospitalNum;
+    }
+
+    public void setShowInToHospitalNum(Boolean showInToHospitalNum) {
+        isShowInToHospitalNum = showInToHospitalNum;
+    }
+
+    public Boolean getShowCutNum() {
+        return isShowCutNum;
+    }
+
+    public void setShowCutNum(Boolean showCutNum) {
+        isShowCutNum = showCutNum;
+    }
+
+    public Boolean getShowBraveNum() {
+        return isShowBraveNum;
+    }
+
+    public void setShowBraveNum(Boolean showBraveNum) {
+        isShowBraveNum = showBraveNum;
+    }
+
+    public Boolean getShowbloods() {
+        return isShowbloods;
+    }
+
+    public void setShowbloods(Boolean showbloods) {
+        isShowbloods = showbloods;
+    }
+
+    public Boolean getShowInToNum() {
+        return isShowInToNum;
+    }
+
+    public void setShowInToNum(Boolean showInToNum) {
+        isShowInToNum = showInToNum;
+    }
+
+    public Boolean getShowOutNum() {
+        return isShowOutNum;
+    }
+
+    public void setShowOutNum(Boolean showOutNum) {
+        isShowOutNum = showOutNum;
+    }
+
+    public Boolean getShowShitNumByDay() {
+        return isShowShitNumByDay;
+    }
+
+    public void setShowShitNumByDay(Boolean showShitNumByDay) {
+        isShowShitNumByDay = showShitNumByDay;
+    }
+
+    public Boolean getShowWeight() {
+        return isShowWeight;
+    }
+
+    public void setShowWeight(Boolean showWeight) {
+        isShowWeight = showWeight;
+    }
+
+    public Boolean getShowHeight() {
+        return isShowHeight;
+    }
+
+    public void setShowHeight(Boolean showHeight) {
+        isShowHeight = showHeight;
+    }
+
+    public Boolean getShowMaiXiang() {
+        return isShowMaiXiang;
+    }
+
+    public void setShowMaiXiang(Boolean showMaiXiang) {
+        isShowMaiXiang = showMaiXiang;
+    }
+
+    public Boolean getShowSheTai() {
+        return isShowSheTai;
+    }
+
+    public void setShowSheTai(Boolean showSheTai) {
+        isShowSheTai = showSheTai;
+    }
+
+    public Drawable getLogo() {
+        return logo;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public float getLogoAndNamePadding() {
+        return logoAndNamePadding;
+    }
+
+    public float getNameTextSize() {
+        return nameTextSize;
+    }
+
+    public int getNameTextColor() {
+        return nameTextColor;
+    }
+
+    public int getBloodsCount() {
+        return bloodsCount;
+    }
+
+    public int getMaiBoStart() {
+        return maiBoStart;
+    }
+
+    public int getMaiBoEnd() {
+        return maiBoEnd;
+    }
+
+    public int getEndTime() {
+        return endTime;
+    }
+
+    public int getStartTime() {
+        return startTime;
+    }
+
+    public int getTimeLag() {
+        return timeLag;
+    }
+
+    public int getTempStart() {
+        return tempStart;
+    }
+
+    public int getTempEnd() {
+        return tempEnd;
+    }
+
+    public int getMaiBoAndTempGeCount() {
+        return maiBoAndTempGeCount;
     }
 
     /**
