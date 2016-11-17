@@ -155,6 +155,8 @@ public class TempretureDay {
         private int timeNum;
         //脉搏 次/分
         private int pulse;
+        //心率
+        private int heartRate;
         //体温
         private float temperature;
         //口温
@@ -168,12 +170,14 @@ public class TempretureDay {
         //生命体征
         private String vitalSigns;
 
+
         public TimeData() {
         }
 
-        public TimeData(int timeNum, int pulse, float temperature, float mouthTemperature, float axillaryTemperature, float analTemperature, int braveNum, String vitalSigns) {
+        public TimeData(int timeNum, int pulse, int heartRate, float temperature, float mouthTemperature, float axillaryTemperature, float analTemperature, int braveNum, String vitalSigns) {
             this.timeNum = timeNum;
             this.pulse = pulse;
+            this.heartRate = heartRate;
             this.temperature = temperature;
             this.mouthTemperature = mouthTemperature;
             this.axillaryTemperature = axillaryTemperature;
@@ -182,6 +186,13 @@ public class TempretureDay {
             this.vitalSigns = vitalSigns;
         }
 
+        public int getHeartRate() {
+            return heartRate;
+        }
+
+        public void setHeartRate(int heartRate) {
+            this.heartRate = heartRate;
+        }
 
         public int getTimeNum() {
             return timeNum;

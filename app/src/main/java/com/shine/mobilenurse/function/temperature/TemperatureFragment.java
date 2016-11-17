@@ -79,17 +79,17 @@ public class TemperatureFragment extends BaseFragment implements TempretureTable
             for (int j = 0; j < count; j++) {
                 TempretureDay.TimeData timeData = null;
                 if (j % count == 0) {
-                    timeData = tempretureDay.new TimeData(2, 85, 40.5f, 34.0f, 35.0f, 36.0f, 90, "");
+                    timeData = tempretureDay.new TimeData(2, 85, 85, 40.5f, 34.0f, 35.0f, 36.0f, 90, "");
                 } else if (j % count == 1) {
-                    timeData = tempretureDay.new TimeData(8, 95, 40.5f, 36.0f, 37.0f, 38.0f, 80, "");
+                    timeData = tempretureDay.new TimeData(8, 95, 95, 40.5f, 36.0f, 37.0f, 38.0f, 80, "");
                 } else if (j % count == 2) {
-                    timeData = tempretureDay.new TimeData(10, 105, 40.5f, 38.0f, 39.0f, 40.0f, 70, "");
+                    timeData = tempretureDay.new TimeData(10, 105, 105, 40.5f, 38.0f, 39.0f, 40.0f, 70, "");
                 } else if (j % count == 3) {
-                    timeData = tempretureDay.new TimeData(15, 85, 40.5f, 36.0f, 37.0f, 39.0f, 80, "");
+                    timeData = tempretureDay.new TimeData(15, 85, 85, 40.5f, 36.0f, 37.0f, 39.0f, 80, "");
                 } else if (j % count == 4) {
-                    timeData = tempretureDay.new TimeData(20, 95, 40.5f, 35.0f, 36.5f, 38.0f, 100, "");
+                    timeData = tempretureDay.new TimeData(20, 95, 95, 40.5f, 35.0f, 36.5f, 38.0f, 100, "");
                 } else if (j % count == 5) {
-                    timeData = tempretureDay.new TimeData(23, 90, 40.5f, 34.5f, 36.5f, 36.5f, 90, "");
+                    timeData = tempretureDay.new TimeData(23, 90, 90, 40.5f, 34.5f, 36.5f, 36.5f, 90, "");
                 }
 
                 timeDatas[j] = timeData;
