@@ -18,4 +18,10 @@ public class InspectionResultFragment extends BaseFragment {
     protected int getLayoutId() {
         return 0;
     }
+
+
+    @Override
+    protected void initTitle() {
+        setTitle("检验结果");
+    }
 }

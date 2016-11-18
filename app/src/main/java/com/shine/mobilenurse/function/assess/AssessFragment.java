@@ -7,7 +7,7 @@ import com.shine.mobilenurse.base.BaseFragment;
  * 描述:评估管理
  */
 
-public class AssessFragment  extends BaseFragment {
+public class AssessFragment extends BaseFragment {
 
     public static AssessFragment newInstance() {
         return new AssessFragment();
@@ -16,5 +16,10 @@ public class AssessFragment  extends BaseFragment {
     @Override
     protected int getLayoutId() {
         return 0;
+    }
+
+    @Override
+    protected void initTitle() {
+        setTitle("评估管理");
     }
 }

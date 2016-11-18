@@ -16,4 +16,9 @@ public class PatrolFragment extends BaseFragment {
     protected int getLayoutId() {
         return 0;
     }
+
+    @Override
+    protected void initTitle() {
+        setTitle("巡视管理");
+    }
 }

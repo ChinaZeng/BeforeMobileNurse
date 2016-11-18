@@ -24,6 +24,8 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 
     private CompositeSubscription mCompositeSubscription;
 
+    private String title;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -58,6 +60,22 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
      * @return
      */
     protected abstract int getLayoutId();
+
+    /**
+     * 设置title
+     */
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    /**
+     * 设置初始化title
+     */
+    protected abstract void initTitle();
+
+    public String getTitle() {
+        return title;
+    }
 
     /**
      * 初始化控件
@@ -97,7 +115,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if(hidden)
+        if (hidden)
             onUnsubscribe();
     }
 

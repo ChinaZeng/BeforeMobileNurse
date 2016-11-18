@@ -61,6 +61,12 @@ public class TemperatureFragment extends BaseFragment implements TempretureTable
 //        tempretureLayout.setOnClickListener(this);//为了触发双击;
     }
 
+
+    @Override
+    protected void initTitle() {
+        setTitle("体温单");
+    }
+
     @Override
     protected void initData() {
         super.initData();

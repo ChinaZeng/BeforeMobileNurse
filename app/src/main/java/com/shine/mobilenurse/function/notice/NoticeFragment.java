@@ -18,4 +18,10 @@ public class NoticeFragment extends BaseFragment {
     protected int getLayoutId() {
         return 0;
     }
+
+
+    @Override
+    protected void initTitle() {
+        setTitle("通知管理");
+    }
 }

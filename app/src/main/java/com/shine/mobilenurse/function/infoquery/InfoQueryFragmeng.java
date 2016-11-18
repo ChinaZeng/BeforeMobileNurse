@@ -17,4 +17,10 @@ public class InfoQueryFragmeng extends BaseFragment {
     protected int getLayoutId() {
         return 0;
     }
+
+
+    @Override
+    protected void initTitle() {
+        setTitle("信息查询");
+    }
 }

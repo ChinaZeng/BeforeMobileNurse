@@ -483,9 +483,6 @@ public class MainActivity extends BaseActivity {
         //显示的时候父布局拦截点击事件
         pup_duck_layout.setInterceptType(InterceptFrameLayout.INTERCEPT);
 
-
-
-
         int[] location = new int[2];
         v.getLocationOnScreen(location);
         if (popupWindow != null) {

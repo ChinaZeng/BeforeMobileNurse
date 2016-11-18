@@ -61,6 +61,11 @@ public class OptionsFragment extends BaseFragment implements RadioGroup.OnChecke
     }
 
     @Override
+    protected void initTitle() {
+        setTitle("首页选项");
+    }
+
+    @Override
     protected void initView(View view) {
         super.initView(view);
 

@@ -19,4 +19,9 @@ public class CallFragment extends BaseFragment {
 
     }
 
+    @Override
+    protected void initTitle() {
+        setTitle("呼叫管理");
+    }
+
 }

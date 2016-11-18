@@ -18,4 +18,9 @@ public class NursingMeasuresFragment extends BaseFragment {
     protected int getLayoutId() {
         return 0;
     }
+
+    @Override
+    protected void initTitle() {
+        setTitle("护理措施");
+    }
 }

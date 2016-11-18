@@ -17,4 +17,9 @@ public class MissionFragment extends BaseFragment {
     protected int getLayoutId() {
         return 0;
     }
+
+    @Override
+    protected void initTitle() {
+        setTitle("宣教");
+    }
 }

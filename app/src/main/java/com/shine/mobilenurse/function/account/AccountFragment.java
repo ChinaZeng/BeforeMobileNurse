@@ -19,4 +19,11 @@ public class AccountFragment extends BaseFragment {
     protected int getLayoutId() {
         return 0;
     }
+
+    @Override
+    protected void initTitle() {
+        setTitle("记账管理");
+    }
+
+
 }

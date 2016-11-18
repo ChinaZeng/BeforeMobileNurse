@@ -18,4 +18,9 @@ public class BloodFragment extends BaseFragment {
     protected int getLayoutId() {
         return 0;
     }
+
+    @Override
+    protected void initTitle() {
+        setTitle("采血管理");
+    }
 }

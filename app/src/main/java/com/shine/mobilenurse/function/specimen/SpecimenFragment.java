@@ -15,6 +15,11 @@ public class SpecimenFragment extends BaseFragment {
     }
 
     @Override
+    protected void initTitle() {
+        setTitle("标本绑定");
+    }
+
+    @Override
     protected int getLayoutId() {
         return R.layout.fragment_specimen;
     }

@@ -13,6 +13,11 @@ public class SignsFragment extends BaseFragment {
         return new SignsFragment();
     }
 
+    @Override
+    protected void initTitle() {
+        setTitle("生命体征");
+    }
+
 
     @Override
     protected int getLayoutId() {

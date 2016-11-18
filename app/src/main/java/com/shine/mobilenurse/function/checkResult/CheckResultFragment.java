@@ -17,4 +17,9 @@ public class CheckResultFragment extends BaseFragment{
     protected int getLayoutId() {
         return 0;
     }
+
+    @Override
+    protected void initTitle() {
+        setTitle("检查结果");
+    }
 }

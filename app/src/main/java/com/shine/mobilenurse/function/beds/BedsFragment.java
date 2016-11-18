@@ -19,4 +19,9 @@ public class BedsFragment  extends BaseFragment{
     protected int getLayoutId() {
         return R.layout.fragment_beds;
     }
+
+    @Override
+    protected void initTitle() {
+        setTitle("床位管理");
+    }
 }
