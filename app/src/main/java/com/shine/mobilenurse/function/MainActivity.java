@@ -1,5 +1,7 @@
 package com.shine.mobilenurse.function;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.app.Activity;
 import android.graphics.Color;
@@ -52,6 +54,7 @@ import com.shine.mobilenurse.function.temperature.TemperatureFragment;
 import com.shine.mobilenurse.scan.ScanHandler;
 import com.shine.mobilenurse.utils.TDUtils;
 import com.shine.mobilenurse.utils.ViewUtil;
+import com.shine.mobilenurse.view.InterceptFrameLayout;
 import com.shine.mobilenurse.view.LogoAndTextView;
 
 import java.util.ArrayList;
@@ -79,7 +82,7 @@ public class MainActivity extends BaseActivity {
     private int tabing = -1;
 
     private View line;
-    private FrameLayout pup_duck_layout;
+    private InterceptFrameLayout pup_duck_layout;
     private PopupWindow popupWindow;
     private int popViewHeight;
 
@@ -469,12 +472,17 @@ public class MainActivity extends BaseActivity {
         }
         return a;
     }
+
     /**
      * 在指定View上方显示popWindow
      *
      * @param v
      */
     private void showPopToViewTop(View v) {
+
+        //显示的时候父布局拦截点击事件
+        pup_duck_layout.setInterceptType(InterceptFrameLayout.INTERCEPT);
+
         int[] location = new int[2];
         v.getLocationOnScreen(location);
         if (popupWindow != null) {
@@ -565,7 +573,9 @@ public class MainActivity extends BaseActivity {
         popupWindow.setBackgroundDrawable(new BitmapDrawable());
         popupWindow.setOutsideTouchable(true);
         popupWindow.setTouchable(true);
-        popupWindow.setFocusable(true);
+
+        //设置焦点之后扫描枪失去作用
+//        popupWindow.setFocusable(true);
 
         popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
             @Override
@@ -576,12 +586,21 @@ public class MainActivity extends BaseActivity {
                     public void onAnimationUpdate(ValueAnimator animation) {
                         int alpha = (int) animation.getAnimatedValue();
                         pup_duck_layout.setForeground(new ColorDrawable(Color.argb(alpha, 0, 0, 0)));
+
                     }
                 });
+                valueAnimator.addListener(new AnimatorListenerAdapter() {
+                    @Override
+                    public void onAnimationEnd(Animator animation) {
+                        super.onAnimationEnd(animation);
+                        //消失的时候父布局不拦截点击事件
+                        pup_duck_layout.setInterceptType(InterceptFrameLayout.NOT_INTERCEPT);
+                    }
+                });
+
                 valueAnimator.setDuration(100).start();
             }
         });
-
     }
 
     /**

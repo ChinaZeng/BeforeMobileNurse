@@ -7,7 +7,7 @@
     android:orientation="vertical"
     tools:context="com.shine.mobilenurse.function.MainActivity">
 
-    <FrameLayout
+    <com.shine.mobilenurse.view.InterceptFrameLayout
         android:id="@+id/pup_duck_layout"
         android:layout_width="match_parent"
         android:layout_height="0dp"
@@ -39,7 +39,7 @@
                     android:src="@mipmap/ic_launcher" />
             </FrameLayout>
         </LinearLayout>
-    </FrameLayout>
+    </com.shine.mobilenurse.view.InterceptFrameLayout>
 
     <include layout="@layout/layout_line" />
 
