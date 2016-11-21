@@ -23,7 +23,7 @@
             app:orientation="horizontal"
             app:text="@string/rfid_login"
             app:textColor="@color/color_C07733"
-            app:textSize="9" />
+             />
 
 
         <com.shine.mobilenurse.view.LogoAndTextView
@@ -35,7 +35,7 @@
             app:orientation="horizontal"
             app:text="@string/scan_login"
             app:textColor="@color/color_C07733"
-            app:textSize="9" />
+            />
 
     </LinearLayout>
 

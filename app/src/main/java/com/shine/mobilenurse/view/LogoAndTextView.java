@@ -24,7 +24,7 @@ public class LogoAndTextView extends LinearLayout {
     private String teg;
     private int textColor;
     private String text;
-    private int textSize;
+    private float textSize;
     private Drawable src;
     private ImageView imageView;
     private TextView textView;
@@ -32,7 +32,7 @@ public class LogoAndTextView extends LinearLayout {
 
     private int type;
 
-    private final int DEFAULT_TEXT_SIZE = 6;
+    private final int DEFAULT_TEXT_SIZE = 14;//1920*1080
 
     public LogoAndTextView(Context context) {
         this(context, null);
@@ -51,20 +51,22 @@ public class LogoAndTextView extends LinearLayout {
 
     private void init(Context context, AttributeSet attrs) {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.LogoAndTextView);
-        textColor = a.getInteger(R.styleable.LogoAndTextView_textColor, context.getResources().getColor(R.color.color_525252));
+        textColor = a.getColor(R.styleable.LogoAndTextView_textColor, context.getResources().getColor(R.color.color_525252));
         text = a.getString(R.styleable.LogoAndTextView_text);
-        textSize = TDUtils.sp2px(context, a.getInteger(R.styleable.LogoAndTextView_textSize, DEFAULT_TEXT_SIZE));
+        textSize = a.getDimension(R.styleable.LogoAndTextView_textSize, DEFAULT_TEXT_SIZE);
         src = a.getDrawable(R.styleable.LogoAndTextView_src);
         teg = a.getString(R.styleable.LogoAndTextView_tag);
         type = a.getInt(R.styleable.LogoAndTextView_orientation, 0);
-        background=a.getDrawable(R.styleable.LogoAndTextView_background);
-        if(background==null)
-            background=context.getResources().getDrawable(R.drawable.op_bg);
+        background = a.getDrawable(R.styleable.LogoAndTextView_background);
+        if (background == null)
+            background = context.getResources().getDrawable(R.drawable.op_bg);
         a.recycle();
     }
 
 
     private void initView(Context context) {
+
+
         View view = null;
 
         if (type == 0) {
@@ -98,7 +100,6 @@ public class LogoAndTextView extends LinearLayout {
         textView.setTextColor(textColor);
         addView(view);
     }
-
 
 
     public void setTextColor(int color) {

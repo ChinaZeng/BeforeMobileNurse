@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">移动护士站</string>
+    <string name="app_name">移动护理站</string>
 
     <!--dialog-->
     <string name="progress_loading">加载中\.\.\.</string>

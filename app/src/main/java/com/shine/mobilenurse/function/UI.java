@@ -18,7 +18,7 @@ import com.shine.mobilenurse.view.LoadingDialog;
 
 public class UI {
 
-    private static LoadingDialog dialog;
+    //    private static LoadingDialog dialog;
     private static Toast mToast;
 
     /**
@@ -26,44 +26,44 @@ public class UI {
      *
      * @param listener
      */
-    public static void setDialogOnCancelListener(DialogInterface.OnCancelListener listener) {
-        if (listener == null || dialog == null)
-            return;
-        dialog.setOnCancelListener(listener);
-    }
+//    public static void setDialogOnCancelListener(DialogInterface.OnCancelListener listener) {
+//        if (listener == null || dialog == null)
+//            return;
+//        dialog.setOnCancelListener(listener);
+//    }
 
     /**
      * 显示对话框
      *
      * @param msg
      */
-    public static void showLoadingDialog(Context context, String msg) {
-        if (msg == null)
-            return;
-        if (dialog == null) {
-            dialog = new LoadingDialog(context);
-            dialog.setCanceledOnTouchOutside(false);
-        }
-        dialog.setMessage(msg);
-        if (!dialog.isShowing())
-            dialog.show();
-    }
+//    public static void showLoadingDialog(Context context, String msg) {
+//        if (msg == null)
+//            return;
+//        if (dialog == null) {
+//            dialog = new LoadingDialog(context);
+//            dialog.setCanceledOnTouchOutside(false);
+//        }
+//        dialog.setMessage(msg);
+//        if (!dialog.isShowing())
+//            dialog.show();
+//    }
 
-    public static void showLoadingDialog(Context context, int msgId) {
-        showLoadingDialog(context, context.getResources().getString(msgId));
-    }
+//    public static void showLoadingDialog(Context context, int msgId) {
+//        showLoadingDialog(context, context.getResources().getString(msgId));
+//    }
 
 
     /**
      * 取消对话框
      */
-    public static void cancelLoadingDialog() {
-        if (dialog != null && dialog.isShowing()) {
-            dialog.dismiss();
-        }
-    }
-
-
+//    public static void cancelLoadingDialog() {
+//        if (dialog != null && dialog.isShowing()) {
+//            dialog.dismiss();
+//        }
+//    }
+//
+//
     public static void showToast(Context context, String msg) {
         if (msg == null)
             return;
@@ -95,7 +95,7 @@ public class UI {
         activity.startActivity(intent);
     }
 
-    public static void showImageActivity(Activity activity, Bundle bundle){
+    public static void showImageActivity(Activity activity, Bundle bundle) {
         Intent intent = new Intent(activity, ImageActivity.class);
         intent.putExtras(bundle);
         activity.startActivity(intent);
