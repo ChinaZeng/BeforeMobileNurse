@@ -6,6 +6,8 @@ import android.view.View;
 import android.view.ViewGroup;
 
 
+import com.shine.mobilenurse.function.OnRecyItemClickListener;
+
 import java.security.PublicKey;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,6 +23,11 @@ public abstract class BaseRecyAdapter<Item> extends RecyclerView.Adapter {
 
     protected Activity context;
 
+    protected OnRecyItemClickListener<Item> onRecyItemClickListener;
+
+    public void setOnRecyItemClickListener(OnRecyItemClickListener<Item> onRecyItemClickListener) {
+        this.onRecyItemClickListener = onRecyItemClickListener;
+    }
 
     public BaseRecyAdapter(Activity context) {
         this.context = context;

@@ -1,5 +1,6 @@
 package com.shine.mobilenurse.function.common;
 
+import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
 
@@ -8,6 +9,8 @@ import com.shine.mobilenurse.base.BaseActivity;
 import com.shine.mobilenurse.image.ImageLoadClass;
 import com.shine.mobilenurse.utils.ViewUtil;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
 
@@ -18,8 +21,9 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class ImageActivity extends BaseActivity implements PhotoViewAttacher.OnPhotoTapListener {
 
-    private PhotoView photoView;
-    public static final String LOCAL_PATH="local_path";
+    @BindView(R.id.popView)
+    PhotoView popView;
+    public static final String LOCAL_PATH = "local_path";
 
     @Override
     protected int getLayoutId() {
@@ -29,17 +33,12 @@ public class ImageActivity extends BaseActivity implements PhotoViewAttacher.OnP
 
 
     @Override
-    protected void findViewId() {
-        super.findViewId();
-        photoView= ViewUtil.$(this,R.id.popView);
-        photoView.setOnPhotoTapListener(this);
-    }
-
-    @Override
     protected void initView() {
         super.initView();
-        String path= getIntent().getStringExtra(LOCAL_PATH);
-        ImageLoadClass.loadImage(this,path,photoView);
+        popView.setOnPhotoTapListener(this);
+
+        String path = getIntent().getStringExtra(LOCAL_PATH);
+        ImageLoadClass.loadImage(this, path, popView);
     }
 
     @Override

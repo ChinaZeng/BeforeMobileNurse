@@ -14,10 +14,6 @@ public class SpecimenFragment extends BaseFragment {
         return new SpecimenFragment();
     }
 
-    @Override
-    protected void initTitle() {
-        setTitle("标本绑定");
-    }
 
     @Override
     protected int getLayoutId() {

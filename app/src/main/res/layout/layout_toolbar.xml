@@ -5,8 +5,8 @@
     android:layout_height="wrap_content"
     android:layout_alignParentTop="true"
     android:clipToPadding="true"
-    app:elevation="0dp"
-    android:fitsSystemWindows="true">
+    android:fitsSystemWindows="true"
+    app:elevation="0dp">
 
     <android.support.v7.widget.Toolbar
         android:id="@+id/toolbar"
@@ -17,39 +17,76 @@
         android:title=""
         app:contentInsetStart="0dp">
 
-
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/toolbar_left_logo"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x10"
+                android:src="@mipmap/ic_launcher" />
+
+            <TextView
+                android:id="@+id/toolbar_left_go_home"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/x10"
+                android:drawableLeft="@mipmap/ic_launcher"
+                android:gravity="center"
+                android:text="主页"
+                android:textColor="@color/font_public_gray"
+                android:textSize="@dimen/font_size_toolbar"
+                android:visibility="gone" />
+
+
+            <Spinner
+                android:id="@+id/toolbar_title_spinner"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:textColor="@color/colorWhite" />
+
+            <TextView
+                android:id="@+id/toolbar_title_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:text="更多"
+                android:textColor="@color/colorWhite"
+                android:textSize="@dimen/font_size_toolbar"
+                android:visibility="gone" />
+
 
             <RelativeLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:id="@+id/toolbar_right_rl"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="@dimen/x10">
 
                 <TextView
-                    android:id="@+id/toolbar_title"
+                    android:id="@+id/toolbar_right_top_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:text="心血管内科病区"
+                    android:gravity="center_horizontal"
+                    android:text="我关注/全部"
                     android:textColor="@color/colorWhite" />
 
-                <TextView
-                    android:id="@+id/toolbar_time"
+                <android.support.v7.widget.SwitchCompat
+                    android:id="@+id/toolbar_right_witch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/x10"
-                    android:drawableLeft="@mipmap/ic_launcher"
-                    android:gravity="center"
-                    android:text="08:39"
-                    android:textColor="@color/colorWhite" />
+                    android:layout_below="@+id/toolbar_right_top_text"
+                    android:layout_centerHorizontal="true"
+                    app:switchMinWidth="@dimen/x120" />
 
             </RelativeLayout>
 
 
-        </LinearLayout>
+        </RelativeLayout>
     </android.support.v7.widget.Toolbar>
 </android.support.design.widget.AppBarLayout>

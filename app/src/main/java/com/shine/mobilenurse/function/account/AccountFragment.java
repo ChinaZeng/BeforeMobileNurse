@@ -20,10 +20,5 @@ public class AccountFragment extends BaseFragment {
         return 0;
     }
 
-    @Override
-    protected void initTitle() {
-        setTitle("记账管理");
-    }
-
 
 }

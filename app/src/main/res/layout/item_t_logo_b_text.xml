@@ -1,25 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_gravity="center"
     android:layout_height="wrap_content"
-    android:orientation="horizontal">
+    android:layout_gravity="center"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/y10"
+    android:paddingTop="@dimen/y10">
 
     <ImageView
-        android:id="@+id/item_1_img"
-        android:layout_gravity="center"
+        android:id="@+id/t_logo"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@mipmap/ic_launcher" />
 
     <TextView
-        android:id="@+id/item_1_text"
+        android:id="@+id/b_text"
+        android:gravity="center"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="center_vertical"
-        android:layout_marginLeft="@dimen/x2"
-        android:gravity="center"
-        android:text="111111" />
-
+        android:text="生命体征" />
 
 </LinearLayout>

@@ -3,16 +3,12 @@ package com.shine.mobilenurse.function.temperature;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
-import android.media.TimedMetaData;
 import android.os.Bundle;
-import android.os.Environment;
-import android.os.Handler;
 import android.support.v7.widget.LinearLayoutCompat;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 
 import com.shine.mobilenurse.R;
 import com.shine.mobilenurse.base.BaseFragment;
@@ -26,6 +22,8 @@ import com.shine.mobilenurse.view.TempretureTableView;
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import uk.co.senab.photoview.IPhotoView;
 import uk.co.senab.photoview.PhotoView;
 import uk.co.senab.photoview.PhotoViewAttacher;
@@ -39,9 +37,10 @@ import uk.co.senab.photoview.PhotoViewAttacher;
 public class TemperatureFragment extends BaseFragment implements TempretureTableView.OnLoadOk, TempretureLayout.OnDoubleClickListener {
 
     private static final String TAG = "TemperatureFragment";
+    @BindView(R.id.tempretureLayout)
+    TempretureLayout tempretureLayout;
 
     private TempretureTableView tempretureTableView;
-    private TempretureLayout tempretureLayout;
     private Boolean isLoadOk;
 
     public static TemperatureFragment newInstance() {
@@ -53,19 +52,15 @@ public class TemperatureFragment extends BaseFragment implements TempretureTable
         return R.layout.fragment_tempreture;
     }
 
+
     @Override
-    protected void findViewId(View view) {
-        super.findViewId(view);
-        tempretureLayout = ViewUtil.$(view, R.id.tempretureLayout);
+    protected void initView(View view) {
+        super.initView(view);
+
         tempretureLayout.setOnDoubleClickListener(this);
 //        tempretureLayout.setOnClickListener(this);//为了触发双击;
     }
 
-
-    @Override
-    protected void initTitle() {
-        setTitle("体温单");
-    }
 
     @Override
     protected void initData() {
@@ -163,4 +158,5 @@ public class TemperatureFragment extends BaseFragment implements TempretureTable
             tempretureLayout.addView(imageView);
         }
     }
+
 }

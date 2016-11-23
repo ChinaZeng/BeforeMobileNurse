@@ -3,7 +3,6 @@ package com.shine.mobilenurse.db;
 import android.content.Context;
 
 import com.shine.mobilenurse.db.sql.Selector;
-import com.shine.mobilenurse.entity.Option;
 
 import java.util.List;
 
@@ -28,24 +27,24 @@ public class OptionDao extends BaseDao {
         return optionDao;
     }
 
-    public synchronized List<Option> findAll() {
-        return findAll(Selector.from(Option.class));
-    }
-
-    public synchronized List<Option> findTop() {
-        return findAll(Selector.from(Option.class).where("TYPE", 0));
-    }
-
-    public synchronized List<Option> findMid0() {
-        return findAll(Selector.from(Option.class).where("TYPE", 1));
-    }
-
-    public synchronized List<Option> findMid1() {
-        return findAll(Selector.from(Option.class).where("TYPE", 2));
-    }
-
-    public synchronized List<Option> findBottom() {
-        return findAll(Selector.from(Option.class).where("TYPE", 3));
-    }
+//    public synchronized List<Option> findAll() {
+//        return findAll(Selector.from(Option.class));
+//    }
+//
+//    public synchronized List<Option> findTop() {
+//        return findAll(Selector.from(Option.class).where("TYPE", 0));
+//    }
+//
+//    public synchronized List<Option> findMid0() {
+//        return findAll(Selector.from(Option.class).where("TYPE", 1));
+//    }
+//
+//    public synchronized List<Option> findMid1() {
+//        return findAll(Selector.from(Option.class).where("TYPE", 2));
+//    }
+//
+//    public synchronized List<Option> findBottom() {
+//        return findAll(Selector.from(Option.class).where("TYPE", 3));
+//    }
 
 }

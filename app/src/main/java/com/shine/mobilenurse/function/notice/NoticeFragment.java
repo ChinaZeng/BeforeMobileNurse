@@ -19,9 +19,4 @@ public class NoticeFragment extends BaseFragment {
         return 0;
     }
 
-
-    @Override
-    protected void initTitle() {
-        setTitle("通知管理");
-    }
 }

@@ -43,10 +43,6 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    @Override
-    protected void findViewId() {
-        super.findViewId();
-    }
 
     @Override
     protected void initView() {

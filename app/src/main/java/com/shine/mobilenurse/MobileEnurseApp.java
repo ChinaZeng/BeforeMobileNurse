@@ -1,5 +1,9 @@
 package com.shine.mobilenurse;
 
+import android.content.Context;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+
 import com.shine.mobilenurse.base.BaseApplication;
 
 /**
@@ -25,6 +29,17 @@ public class MobileEnurseApp extends BaseApplication {
      */
     public static MobileEnurseApp getInstance() {
         return appInstance;
+    }
+
+
+    public boolean isNetworkConnected() {
+        ConnectivityManager mConnectivityManager = (ConnectivityManager)
+                getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo mNetworkInfo = mConnectivityManager.getActiveNetworkInfo();
+        if (mNetworkInfo != null) {
+            return mNetworkInfo.isAvailable();
+        }
+        return false;
     }
 
 }

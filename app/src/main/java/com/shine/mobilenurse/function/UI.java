@@ -9,7 +9,7 @@ import android.widget.Toast;
 
 import com.shine.mobilenurse.function.common.ImageActivity;
 import com.shine.mobilenurse.function.common.ScanActivity;
-import com.shine.mobilenurse.view.LoadingDialog;
+import com.shine.mobilenurse.function.main.MainActivity;
 
 /**
  * Created by zzw on 2016/9/27.
@@ -18,52 +18,12 @@ import com.shine.mobilenurse.view.LoadingDialog;
 
 public class UI {
 
-    //    private static LoadingDialog dialog;
     private static Toast mToast;
 
-    /**
-     * 设置对话框取消监听
-     *
-     * @param listener
-     */
-//    public static void setDialogOnCancelListener(DialogInterface.OnCancelListener listener) {
-//        if (listener == null || dialog == null)
-//            return;
-//        dialog.setOnCancelListener(listener);
-//    }
-
-    /**
-     * 显示对话框
-     *
-     * @param msg
-     */
-//    public static void showLoadingDialog(Context context, String msg) {
-//        if (msg == null)
-//            return;
-//        if (dialog == null) {
-//            dialog = new LoadingDialog(context);
-//            dialog.setCanceledOnTouchOutside(false);
-//        }
-//        dialog.setMessage(msg);
-//        if (!dialog.isShowing())
-//            dialog.show();
-//    }
-
-//    public static void showLoadingDialog(Context context, int msgId) {
-//        showLoadingDialog(context, context.getResources().getString(msgId));
-//    }
 
 
-    /**
-     * 取消对话框
-     */
-//    public static void cancelLoadingDialog() {
-//        if (dialog != null && dialog.isShowing()) {
-//            dialog.dismiss();
-//        }
-//    }
-//
-//
+
+
     public static void showToast(Context context, String msg) {
         if (msg == null)
             return;

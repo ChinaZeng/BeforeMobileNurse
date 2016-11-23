@@ -10,6 +10,8 @@ import android.view.WindowManager;
 import com.shine.mobilenurse.net.NetCallback;
 import com.shine.mobilenurse.utils.LogPrint;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -24,9 +26,11 @@ import rx.subscriptions.CompositeSubscription;
  * 描述:Activity基础类
  */
 
-public abstract class BaseActivity extends AppCompatActivity implements View.OnClickListener {
+public abstract class BaseActivity extends AppCompatActivity {
 
     private CompositeSubscription mCompositeSubscription;
+
+    private Unbinder unbinder;
 
     @Override
     protected final void onCreate(Bundle savedInstanceState) {
@@ -35,8 +39,8 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
 
         if (getLayoutId() != 0) {
             setContentView(getLayoutId());
+            unbinder = ButterKnife.bind(this);
         }
-
         initView();
         init(savedInstanceState);
         initData();
@@ -62,8 +66,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
      * 初始化控件
      */
     protected void initView() {
-        findViewId();
-        setViewListener();
     }
 
     /**
@@ -73,26 +75,18 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
     }
 
 
-    /**
-     * findId
-     */
-    protected void findViewId() {
-    }
-
-    /**
-     * 设置相关监听
-     */
-    protected void setViewListener() {
-
-    }
-
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (unbinder != null)
+            unbinder.unbind();
+
         onUnsubscribe();
     }
 
     protected void onUnsubscribe() {
+
+
         //取消注册，以避免内存泄露
         if (mCompositeSubscription != null && mCompositeSubscription.hasSubscriptions())
             mCompositeSubscription.unsubscribe();
@@ -127,15 +121,6 @@ public abstract class BaseActivity extends AppCompatActivity implements View.OnC
             }
         }
         return true;
-    }
-
-
-    @Override
-    public void onClick(View v) {
-//        if (v.getId() == R.id.toolbar_back) {
-//            TDevice.hideSoftKeyboard(getCurrentFocus());
-//            onBackPressed();
-//        }
     }
 
 }

@@ -20,8 +20,5 @@ public class DoctorAdviceFragment extends BaseFragment {
         return R.layout.fragment_doctor_advice;
     }
 
-    @Override
-    protected void initTitle() {
-        setTitle("医嘱执行");
-    }
+
 }

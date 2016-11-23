@@ -1,40 +1,43 @@
 package com.shine.mobilenurse.entity;
 
 /**
- * Created by zzw on 2016/10/13.
+ * Created by zzw on 2016/11/23.
  * 描述:
  */
 
 public class Option extends BaseEntity {
 
+
+    private int id;
+    private int sort;
     private String name;
-    private String teg;
-    private int type;
+
 
     public Option() {
 
     }
 
-    /**
-     * @param name
-     * @param teg
-     * @param type 0表示竖直  1表示水平
-     */
-    public Option(String name, String teg, int type) {
+    public Option(int id, int sort, String name) {
+        this.id = id;
+        this.sort = sort;
         this.name = name;
-        this.teg = teg;
-        this.type = type;
     }
 
-
-    public int getType() {
-        return type;
+    public int getId() {
+        return id;
     }
 
-    public void setType(int type) {
-        this.type = type;
+    public void setId(int id) {
+        this.id = id;
     }
 
+    public int getSort() {
+        return sort;
+    }
+
+    public void setSort(int sort) {
+        this.sort = sort;
+    }
 
     public String getName() {
         return name;
@@ -42,13 +45,5 @@ public class Option extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public String getTeg() {
-        return teg;
-    }
-
-    public void setTeg(String teg) {
-        this.teg = teg;
     }
 }

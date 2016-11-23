@@ -18,8 +18,4 @@ public class SkinTestFragment extends BaseFragment {
     }
 
 
-    @Override
-    protected void initTitle() {
-        setTitle("皮试管理");
-    }
 }

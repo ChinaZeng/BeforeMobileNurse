@@ -16,26 +16,26 @@
         android:gravity="center"
         android:orientation="horizontal">
 
-        <com.shine.mobilenurse.view.LogoAndTextView
+        <TextView
             android:id="@+id/rfid_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            app:orientation="horizontal"
-            app:text="@string/rfid_login"
-            app:textColor="@color/color_C07733"
-             />
+            android:drawableLeft="@mipmap/ic_launcher"
+            android:gravity="center"
+            android:text="@string/rfid_login"
+            android:textColor="@color/color_C07733" />
 
 
-        <com.shine.mobilenurse.view.LogoAndTextView
+        <TextView
             android:id="@+id/scan_login"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/x50"
+            android:drawableLeft="@mipmap/ic_launcher"
+            android:gravity="center"
             android:onClick="scanLogin"
-            app:orientation="horizontal"
-            app:text="@string/scan_login"
-            app:textColor="@color/color_C07733"
-            />
+            android:text="@string/scan_login"
+            android:textColor="@color/color_C07733" />
 
     </LinearLayout>
 
@@ -78,11 +78,11 @@
             android:drawableLeft="@mipmap/ic_launcher"
             android:drawableRight="@mipmap/ic_launcher"
             android:gravity="center"
-            android:text="心血管内科护理单元"
             android:paddingBottom="@dimen/y5"
             android:paddingLeft="@dimen/x20"
             android:paddingRight="@dimen/x20"
-            android:paddingTop="@dimen/y5" />
+            android:paddingTop="@dimen/y5"
+            android:text="心血管内科护理单元" />
 
     </LinearLayout>
 

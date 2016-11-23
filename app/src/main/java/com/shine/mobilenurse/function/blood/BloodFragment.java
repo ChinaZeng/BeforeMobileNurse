@@ -19,8 +19,4 @@ public class BloodFragment extends BaseFragment {
         return 0;
     }
 
-    @Override
-    protected void initTitle() {
-        setTitle("采血管理");
-    }
 }

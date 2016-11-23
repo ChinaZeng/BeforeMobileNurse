@@ -19,7 +19,7 @@ public class ScanActivity extends CaptureActivity {
         super.scanSuccess(s);
         LogPrint.log_e(TAG, "扫描结果:" + s);
 
-        UI.showLoadingDialog(this, R.string.scan_success_loading);
+//        UI.showLoadingDialog(this, R.string.scan_success_loading);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
@@ -29,7 +29,7 @@ public class ScanActivity extends CaptureActivity {
     }
 
     private void goMainActivity() {
-        UI.cancelLoadingDialog();
+//        UI.cancelLoadingDialog();
         setResult(RESULT_OK, new Intent(this, LoginActivity.class));
         UI.showMainActivity(this);
         finish();

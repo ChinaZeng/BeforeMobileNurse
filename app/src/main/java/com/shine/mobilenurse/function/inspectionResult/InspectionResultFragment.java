@@ -20,8 +20,5 @@ public class InspectionResultFragment extends BaseFragment {
     }
 
 
-    @Override
-    protected void initTitle() {
-        setTitle("检验结果");
-    }
+
 }

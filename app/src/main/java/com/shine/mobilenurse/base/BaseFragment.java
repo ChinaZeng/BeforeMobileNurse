@@ -7,6 +7,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import butterknife.ButterKnife;
+import butterknife.Unbinder;
 import rx.Observable;
 import rx.Subscriber;
 import rx.Subscription;
@@ -20,11 +22,11 @@ import rx.subscriptions.CompositeSubscription;
  * 描述:Fragment基础类
  */
 
-public abstract class BaseFragment extends Fragment implements View.OnClickListener {
+public abstract class BaseFragment extends Fragment{
 
+
+    private Unbinder unbinder;
     private CompositeSubscription mCompositeSubscription;
-
-    private String title;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -48,6 +50,7 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     @Override
     public void onViewCreated(View view, Bundle savedInstanceState) {
         if (view != null) {
+            unbinder = ButterKnife.bind(this, view);
             initView(view);
             initData();
         }
@@ -62,29 +65,11 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
     protected abstract int getLayoutId();
 
     /**
-     * 设置title
-     */
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    /**
-     * 设置初始化title
-     */
-    protected abstract void initTitle();
-
-    public String getTitle() {
-        return title;
-    }
-
-    /**
      * 初始化控件
      *
      * @param view
      */
     protected void initView(View view) {
-        findViewId(view);
-        setViewListener();
     }
 
     /**
@@ -94,34 +79,12 @@ public abstract class BaseFragment extends Fragment implements View.OnClickListe
 
     }
 
-    /**
-     * findId
-     */
-    protected void findViewId(View view) {
-
-    }
-
-    /**
-     * 设置相关监听
-     */
-    protected void setViewListener() {
-
-    }
-
-    @Override
-    public void onClick(View v) {
-    }
-
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (hidden)
-            onUnsubscribe();
-    }
 
     @Override
     public void onDestroy() {
         super.onDestroy();
+        if (unbinder != null)
+            unbinder.unbind();
         onUnsubscribe();
     }
 

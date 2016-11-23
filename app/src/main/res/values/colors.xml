@@ -13,4 +13,13 @@
     <color name="color_ec5a7">#0EC5A7</color>
     <color name="color_C07733">#C07733</color>
     <color name="color_00B9A9">#00B9A9</color>
+
+
+    <color name="font_public">#1e1e1e</color>
+    <color name="font_public_gray">#949494</color>
+    <color name="font_public_gray_2">#cdcdcd</color>
+
+    <color name="color_main_fragment_bg">#f5f5fa</color>
+    <color name="color_beds_choed_text">#32da9c</color>
+
 </resources>

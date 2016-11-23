@@ -17,9 +17,5 @@ public class PrintFragment extends BaseFragment {
     protected int getLayoutId() {
         return 0;
     }
-    @Override
-    protected void initTitle() {
-        setTitle("远程打印");
-    }
 
 }

@@ -18,8 +18,4 @@ public class MissionFragment extends BaseFragment {
         return 0;
     }
 
-    @Override
-    protected void initTitle() {
-        setTitle("宣教");
-    }
 }

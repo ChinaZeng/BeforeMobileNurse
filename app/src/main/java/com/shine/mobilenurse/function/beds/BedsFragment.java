@@ -20,8 +20,4 @@ public class BedsFragment  extends BaseFragment{
         return R.layout.fragment_beds;
     }
 
-    @Override
-    protected void initTitle() {
-        setTitle("床位管理");
-    }
 }

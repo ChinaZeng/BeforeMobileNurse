@@ -19,8 +19,5 @@ public class InfoQueryFragmeng extends BaseFragment {
     }
 
 
-    @Override
-    protected void initTitle() {
-        setTitle("信息查询");
-    }
+
 }

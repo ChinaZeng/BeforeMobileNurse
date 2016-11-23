@@ -18,8 +18,4 @@ public class AssessFragment extends BaseFragment {
         return 0;
     }
 
-    @Override
-    protected void initTitle() {
-        setTitle("评估管理");
-    }
 }
