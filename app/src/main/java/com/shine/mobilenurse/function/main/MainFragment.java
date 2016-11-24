@@ -1,11 +1,9 @@
 package com.shine.mobilenurse.function.main;
 
 
-import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.github.jdsjlzx.recyclerview.HeaderSpanSizeLookup;
@@ -18,6 +16,8 @@ import com.shine.mobilenurse.entity.Option;
 import com.shine.mobilenurse.function.OnRecyItemClickListener;
 import com.shine.mobilenurse.function.adapter.MainFragmentMidAdapter;
 import com.shine.mobilenurse.view.SpaceItemDecoration;
+
+import org.greenrobot.eventbus.EventBus;
 
 import java.util.List;
 
@@ -36,7 +36,6 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     private MainFragmentMidAdapter adapter = null;
     private LRecyclerViewAdapter mLRecyclerViewAdapter = null;
     private OptionDao optionDao;
-
 
     public static MainFragment newInstance() {
         return new MainFragment();
@@ -90,6 +89,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
         int a = topList.size() > topTvList.length ? topTvList.length : topList.size();
         for (int i = 0; i < a; i++) {
             topTvList[i].setText(topList.get(i).getName());
+            topTvList[i].setTag(topList.get(i));
             topTvList[i].setVisibility(View.VISIBLE);
         }
 
@@ -100,6 +100,7 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
             bottomLine0.setVisibility(View.VISIBLE);
         for (int i = 0; i < b; i++) {
             bottomTvList[i].setText(bottomList.get(i).getName());
+            bottomTvList[i].setTag(bottomList.get(i));
             bottomTvList[i].setVisibility(View.VISIBLE);
         }
     }
@@ -193,16 +194,13 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.top_0:
-                break;
             case R.id.top_1:
-                break;
             case R.id.top_2:
-                break;
             case R.id.top_3:
-                break;
             case R.id.bottom_0:
-                break;
             case R.id.bottom_1:
+                Option option = (Option) view.getTag();
+                ((MainActivity) getActivity()).chooseFragment(1, 2, option);
                 break;
         }
     }
@@ -210,7 +208,8 @@ public class MainFragment extends BaseFragment implements View.OnClickListener, 
 
     @Override
     public void OnItemClick(View view, Option option, int pos) {
-        ((MainActivity) getActivity()).chooseFragment(1, 2);
-
+        ((MainActivity) getActivity()).chooseFragment(1, 2, option);
     }
+
+
 }

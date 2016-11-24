@@ -71,4 +71,10 @@ public class Option extends BaseEntity {
                 ", type=" + type +
                 '}';
     }
+
+    public boolean equals(Option option) {
+        if (option == null)
+            return false;
+        return this.getId() == option.getId();
+    }
 }

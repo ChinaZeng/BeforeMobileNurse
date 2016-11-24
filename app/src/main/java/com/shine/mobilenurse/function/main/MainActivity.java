@@ -31,7 +31,7 @@ import android.widget.TextView;
 import com.shine.mobilenurse.R;
 import com.shine.mobilenurse.base.BaseActivity;
 import com.shine.mobilenurse.entity.Beds;
-import com.shine.mobilenurse.eventBusMessage.TabPosMessage;
+import com.shine.mobilenurse.entity.Option;
 import com.shine.mobilenurse.function.OnRecyItemClickListener;
 import com.shine.mobilenurse.function.UI;
 import com.shine.mobilenurse.function.adapter.MainbedsPupAdapter;
@@ -43,11 +43,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class MainActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener, OnRecyItemClickListener<Beds> {
-
+public class MainActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener, OnRecyItemClickListener<Beds>, PopupWindow.OnDismissListener {
 
     @BindView(R.id.toolbar_left_logo)
     ImageView toolbarLeftLogo;
@@ -77,7 +75,7 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     RelativeLayout toolbarRightRl;
     private Fragment mainFragment, optionFragment;
 
-    private final String NOW_POS = "NOW_POS";
+    private final String NOW_MAIN_FRAGMENT_POS = "NOW_MAIN_FRAGMENT_POS";
 
     //长时间无使用的时候 系统回收 记录位置
     private int nowPos = -1;
@@ -94,7 +92,7 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         if (savedInstanceState == null) {
 
         } else {
-            pos = savedInstanceState.getInt(NOW_POS, 0);
+            pos = savedInstanceState.getInt(NOW_MAIN_FRAGMENT_POS, 0);
         }
         chooseFragment(pos);
     }
@@ -182,28 +180,25 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
 
     @Override
     public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-        if (isChecked) {
-            chooseFragment(1, 2);
-        } else {
-            chooseFragment(0, 1);
-        }
+
     }
 
 
     public void chooseFragment(int pos) {
-        chooseFragment(pos, 0);
+        chooseFragment(pos, 0, null);
     }
 
     /**
      * @param pos     0表示主页面  1表示选项卡页面
      * @param animDec 0表示无动画 1表示left进入 2表示right进入
+     * @param option  进入tabLayout里面跳转到那个界面
      */
-    public void chooseFragment(int pos, int animDec) {
+    public void chooseFragment(int pos, int animDec, Option option) {
 
         if (pos == nowPos)
             return;
-
         this.nowPos = pos;
+
 
         // 开启一个Fragment事务
         FragmentTransaction fragmentTransaction = getSupportFragmentManager().beginTransaction();
@@ -232,6 +227,9 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
 
                 if (optionFragment == null) {
                     optionFragment = OptionFragment.newInstance();
+                    Bundle bundle = new Bundle();
+                    bundle.putSerializable(OptionFragment.FIRST_INTO, option);
+                    optionFragment.setArguments(bundle);
                     fragmentTransaction.add(R.id.frame_layout, optionFragment);
                 } else {
                     fragmentTransaction.show(optionFragment);
@@ -240,25 +238,19 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
                 break;
         }
 
-
         fragmentTransaction.commit();
-    }
 
+        if (pos == 1) {
+            EventBus.getDefault().post(option);
+        }
 
-    /**
-     * 发送消息,确定tab位置.OptionFragment接收
-     */
-    private void sendPosInfo(String fragmentName) {
-        if (fragmentName == null)
-            return;
-        EventBus.getDefault().post(new TabPosMessage(fragmentName));
     }
 
 
     @Override
     public void onSaveInstanceState(Bundle outState, PersistableBundle outPersistentState) {
         super.onSaveInstanceState(outState, outPersistentState);
-        outState.putInt(NOW_POS, nowPos);
+        outState.putInt(NOW_MAIN_FRAGMENT_POS, nowPos);
     }
 
     private long mExitTime; //退出时间
@@ -271,6 +263,12 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
                 popupWindow.dismiss();
                 return true;
             }
+
+            if (nowPos == 1) {
+                chooseFragment(0, 1, null);
+                return true;
+            }
+
 
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
                 UI.showToast(this, R.string.toast_app_exit_for_double);
@@ -308,15 +306,7 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         } else {
             activityMain.setInterceptType(InterceptFrameLayout.INTERCEPT);
             popupWindow.showAtLocation(activityMain, Gravity.BOTTOM, 0, 0);
-            ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 178);
-            valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimator animation) {
-                    int alpha = (int) animation.getAnimatedValue();
-                    activityMain.setForeground(new ColorDrawable(Color.argb(alpha, 0, 0, 0)));
-                }
-            });
-            valueAnimator.setDuration(100).start();
+            pupShowMainBgAnim();
         }
     }
 
@@ -350,30 +340,7 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         popupWindow.setOutsideTouchable(true);
         //设置为true  扫描枪失去作用
         popupWindow.setTouchable(true);
-
-        popupWindow.setOnDismissListener(new PopupWindow.OnDismissListener() {
-            @Override
-            public void onDismiss() {
-                ValueAnimator valueAnimator = ValueAnimator.ofInt(178, 0);
-                valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-                    @Override
-                    public void onAnimationUpdate(ValueAnimator animation) {
-                        int alpha = (int) animation.getAnimatedValue();
-                        activityMain.setForeground(new ColorDrawable(Color.argb(alpha, 0, 0, 0)));
-                    }
-                });
-                valueAnimator.addListener(new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animation) {
-                        super.onAnimationEnd(animation);
-                        //消失的时候父布局不拦截点击事件
-                        activityMain.setInterceptType(InterceptFrameLayout.NOT_INTERCEPT);
-                    }
-                });
-
-                valueAnimator.setDuration(100).start();
-            }
-        });
+        popupWindow.setOnDismissListener(this);
     }
 
 
@@ -393,4 +360,43 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         }
     }
 
+    /**
+     * pup消失的时候  bg变亮 并且设置activityMain不拦截点击事件
+     */
+    @Override
+    public void onDismiss() {
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(178, 0);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int alpha = (int) animation.getAnimatedValue();
+                activityMain.setForeground(new ColorDrawable(Color.argb(alpha, 0, 0, 0)));
+            }
+        });
+        valueAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                //消失的时候父布局不拦截点击事件
+                activityMain.setInterceptType(InterceptFrameLayout.NOT_INTERCEPT);
+            }
+        });
+
+        valueAnimator.setDuration(100).start();
+    }
+
+    /**
+     * pup显示的时候的动画显示  bg变暗 并且设置activityMain拦截点击事件防止外部点击
+     */
+    public void pupShowMainBgAnim() {
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 178);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int alpha = (int) animation.getAnimatedValue();
+                activityMain.setForeground(new ColorDrawable(Color.argb(alpha, 0, 0, 0)));
+            }
+        });
+        valueAnimator.setDuration(100).start();
+    }
 }

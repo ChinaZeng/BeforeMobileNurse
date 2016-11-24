@@ -29,17 +29,6 @@ public abstract class BaseFragment extends Fragment{
     private CompositeSubscription mCompositeSubscription;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle outState) {
-        super.onSaveInstanceState(outState);
-    }
-
-    @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         if (getLayoutId() == 0) {
             return null;
