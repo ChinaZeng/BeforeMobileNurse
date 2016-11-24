@@ -73,6 +73,7 @@ public class BaseDao {
                     }
                 }
                 list.add((T) obj);
+                LogPrint.log_d(TAG, selector.getEntity().getSimpleName() + " 查询到条目：" + obj.toString());
             }
             LogPrint.log_d(TAG, selector.getEntity().getSimpleName() + " 查询到条目数：" + list.size());
             cursor.close();

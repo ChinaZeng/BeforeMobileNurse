@@ -1,5 +1,6 @@
 package com.shine.mobilenurse.entity;
 
+
 /**
  * Created by zzw on 2016/11/23.
  * 描述:
@@ -7,20 +8,26 @@ package com.shine.mobilenurse.entity;
 
 public class Option extends BaseEntity {
 
+    private Integer id;
 
-    private int id;
-    private int sort;
+    private Integer sort;
     private String name;
+    /**
+     * 上方表示0  中间表示1  下方表示2 不显示 3
+     */
+    private Integer type;
 
 
     public Option() {
 
     }
 
-    public Option(int id, int sort, String name) {
+
+    public Option(int id, int sort, String name, int type) {
         this.id = id;
         this.sort = sort;
         this.name = name;
+        this.type = type;
     }
 
     public int getId() {
@@ -45,5 +52,23 @@ public class Option extends BaseEntity {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public int getType() {
+        return type;
+    }
+
+    public void setType(int type) {
+        this.type = type;
+    }
+
+    @Override
+    public String toString() {
+        return "Option{" +
+                "id=" + id +
+                ", sort=" + sort +
+                ", name='" + name + '\'' +
+                ", type=" + type +
+                '}';
     }
 }

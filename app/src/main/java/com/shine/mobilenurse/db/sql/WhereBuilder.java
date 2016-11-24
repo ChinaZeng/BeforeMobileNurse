@@ -31,6 +31,12 @@ public class WhereBuilder {
         return this;
     }
 
+
+    public WhereBuilder andNot(String columnName, Object value) {
+        wheres.add(String.format(" AND " + columnName + " != '%s' ", value.toString()));
+        return this;
+    }
+
     public WhereBuilder or(String columnName, Object value) {
         wheres.add(String.format(" OR " + columnName + " = '%s' ", value.toString()));
         return this;

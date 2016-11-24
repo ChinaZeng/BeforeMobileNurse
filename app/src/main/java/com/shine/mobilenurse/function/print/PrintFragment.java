@@ -1,5 +1,6 @@
 package com.shine.mobilenurse.function.print;
 
+import com.shine.mobilenurse.R;
 import com.shine.mobilenurse.base.BaseFragment;
 
 /**
@@ -15,7 +16,7 @@ public class PrintFragment extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.fragment_print;
     }
 
 }

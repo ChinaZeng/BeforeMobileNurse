@@ -6,10 +6,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.shine.mobilenurse.R;
 import com.shine.mobilenurse.base.BaseRecyAdapter;
+import com.shine.mobilenurse.entity.Option;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -19,7 +21,7 @@ import butterknife.ButterKnife;
  * 描述:
  */
 
-public class MainFragmentMidAdapter extends BaseRecyAdapter<String> {
+public class MainFragmentMidAdapter extends BaseRecyAdapter<Option> {
 
 
     public MainFragmentMidAdapter(Activity context) {
@@ -35,12 +37,14 @@ public class MainFragmentMidAdapter extends BaseRecyAdapter<String> {
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (holder instanceof MainFragmentViewHolder) {
             final MainFragmentViewHolder mainFragmentViewHolder = (MainFragmentViewHolder) holder;
-            mainFragmentViewHolder.textTv.setText(mData.get(position));
+            final Option option = mData.get(position);
+            mainFragmentViewHolder.textTv.setText(option.getName());
+            mainFragmentViewHolder.textIv.setImageResource(R.mipmap.ic_launcher);
             mainFragmentViewHolder.textCardView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     if (onRecyItemClickListener != null)
-                        onRecyItemClickListener.OnItemClick(mainFragmentViewHolder.textCardView, mData.get(position), position);
+                        onRecyItemClickListener.OnItemClick(mainFragmentViewHolder.textCardView, option, position);
                 }
             });
         }
@@ -53,6 +57,8 @@ public class MainFragmentMidAdapter extends BaseRecyAdapter<String> {
         TextView textTv;
         @BindView(R.id.text_cardView)
         CardView textCardView;
+        @BindView(R.id.text_iv)
+        ImageView textIv;
 
         public MainFragmentViewHolder(View itemView) {
             super(itemView);

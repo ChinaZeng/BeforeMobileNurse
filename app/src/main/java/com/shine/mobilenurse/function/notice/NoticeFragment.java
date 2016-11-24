@@ -1,5 +1,6 @@
 package com.shine.mobilenurse.function.notice;
 
+import com.shine.mobilenurse.R;
 import com.shine.mobilenurse.base.BaseFragment;
 
 /**
@@ -16,7 +17,7 @@ public class NoticeFragment extends BaseFragment {
 
     @Override
     protected int getLayoutId() {
-        return 0;
+        return R.layout.fragment_notice;
     }
 
 }

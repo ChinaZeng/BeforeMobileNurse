@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/y146"
+    android:layout_height="wrap_content"
     android:gravity="center"
     android:orientation="horizontal"
     android:paddingTop="@dimen/y20">
@@ -9,27 +9,30 @@
     <TextView
         android:id="@+id/bottom_0"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y146"
         android:layout_weight="1"
         android:background="@drawable/op_bg"
         android:drawableTop="@mipmap/ic_launcher"
         android:gravity="center"
-        android:text="检查报告" />
+        android:visibility="gone" />
 
     <View
+        android:id="@+id/bottom_line_0"
         android:layout_width="@dimen/x1"
         android:layout_height="@dimen/y80"
         android:layout_gravity="center"
-        android:background="@color/color_main_fragment_bg" />
+        android:background="@color/color_main_fragment_bg"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/bottom_1"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/y146"
         android:layout_weight="1"
         android:background="@drawable/op_bg"
         android:drawableTop="@mipmap/ic_launcher"
         android:gravity="center"
-        android:text="检查报告" />
+        android:text="检查报告"
+        android:visibility="gone" />
 
 </LinearLayout>

@@ -111,15 +111,6 @@ public class TemperatureFragment extends BaseFragment implements TempretureTable
     }
 
 
-    @Override
-    public void onHiddenChanged(boolean hidden) {
-        super.onHiddenChanged(hidden);
-        if (!hidden) {
-            addData();
-        }
-    }
-
-
     private Bitmap createViewBitmap(View v) {
         Bitmap bitmap = Bitmap.createBitmap(v.getWidth(), v.getHeight(),
                 Bitmap.Config.ARGB_8888);

@@ -266,6 +266,12 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            if (popupWindow != null && popupWindow.isShowing()) {
+                popupWindow.dismiss();
+                return true;
+            }
+
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
                 UI.showToast(this, R.string.toast_app_exit_for_double);
                 mExitTime = System.currentTimeMillis();
