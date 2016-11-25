@@ -5,6 +5,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 
 import com.shine.mobilenurse.base.BaseApplication;
+import com.shine.mobilenurse.view.dialog.CheckFailDialog;
+import com.shine.mobilenurse.view.dialog.CheckOkDialog;
 
 /**
  * Created by zzw on 2016/9/27.
@@ -15,6 +17,7 @@ public class MobileEnurseApp extends BaseApplication {
 
     private static MobileEnurseApp appInstance = null;
 
+    private CheckFailDialog checkFailDialog;
 
     @Override
     public void onCreate() {
@@ -31,7 +34,11 @@ public class MobileEnurseApp extends BaseApplication {
         return appInstance;
     }
 
-
+    /**
+     * 是否网络可用
+     *
+     * @return
+     */
     public boolean isNetworkConnected() {
         ConnectivityManager mConnectivityManager = (ConnectivityManager)
                 getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -41,5 +48,7 @@ public class MobileEnurseApp extends BaseApplication {
         }
         return false;
     }
+
+
 
 }

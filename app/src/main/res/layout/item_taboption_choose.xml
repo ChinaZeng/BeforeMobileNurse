@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ietm_taboption_cho_text"
+    android:layout_width="@dimen/x160"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:background="@drawable/pop_taboption_not_cho_bg"
+    android:padding="15px"
+    android:layout_marginBottom="@dimen/y15"
+    android:text="医嘱执行"
+    android:textSize="@dimen/font_size_public_mid">
+
+
+</TextView>

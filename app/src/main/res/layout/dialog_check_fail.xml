@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:background="@drawable/dialog_check_fail_bg"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/dialog_check_fail_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y96"
+        android:gravity="center"
+        android:text="医嘱执行核对"
+        android:textSize="32px" />
+
+    <include layout="@layout/layout_line" />
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:minHeight="@dimen/y368"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/dialog_check_fail_img"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@mipmap/ic_launcher" />
+
+        <TextView
+            android:id="@+id/dialog_check_fail_content"
+            android:layout_width="@dimen/x440"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="当前病人与病签信息不一致,请查对!"
+            android:textSize="28px" />
+
+    </LinearLayout>
+
+
+    <include layout="@layout/layout_line" />
+
+    <TextView
+        android:id="@+id/dialog_check_fail_close"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/y96"
+        android:gravity="center"
+        android:text="关闭"
+        android:textColor="@color/colorPrimary"
+        android:textSize="@dimen/text_size_18" />
+
+
+</LinearLayout>

@@ -10,6 +10,7 @@ import android.widget.Toast;
 import com.shine.mobilenurse.function.common.ImageActivity;
 import com.shine.mobilenurse.function.common.ScanActivity;
 import com.shine.mobilenurse.function.main.MainActivity;
+import com.shine.mobilenurse.view.dialog.CheckOkDialog;
 
 /**
  * Created by zzw on 2016/9/27.
@@ -20,9 +21,7 @@ public class UI {
 
     private static Toast mToast;
 
-
-
-
+    private static CheckOkDialog checkOkDialog;
 
     public static void showToast(Context context, String msg) {
         if (msg == null)
@@ -43,6 +42,17 @@ public class UI {
         showToast(context, context.getString(id));
     }
 
+    /**
+     * 显示核对成功对话框
+     */
+    public static void showCheckOkDialog(Context context) {
+        if (checkOkDialog == null) {
+            checkOkDialog = new CheckOkDialog(context);
+        }
+        if (!checkOkDialog.isShowing())
+            checkOkDialog.show();
+    }
+
 
     public static void showScanActivity(Activity activity, int request) {
         Intent intent = new Intent(activity, ScanActivity.class);
@@ -60,5 +70,6 @@ public class UI {
         intent.putExtras(bundle);
         activity.startActivity(intent);
     }
+
 
 }

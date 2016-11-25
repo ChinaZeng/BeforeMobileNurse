@@ -21,6 +21,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
@@ -28,6 +29,7 @@ import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
+import com.shine.mobilenurse.MobileEnurseApp;
 import com.shine.mobilenurse.R;
 import com.shine.mobilenurse.base.BaseActivity;
 import com.shine.mobilenurse.entity.Beds;
@@ -35,7 +37,11 @@ import com.shine.mobilenurse.entity.Option;
 import com.shine.mobilenurse.function.OnRecyItemClickListener;
 import com.shine.mobilenurse.function.UI;
 import com.shine.mobilenurse.function.adapter.MainbedsPupAdapter;
+import com.shine.mobilenurse.utils.LogPrint;
 import com.shine.mobilenurse.view.InterceptFrameLayout;
+import com.shine.mobilenurse.view.dialog.CheckDialog;
+import com.shine.mobilenurse.view.dialog.CheckFailDialog;
+import com.shine.mobilenurse.view.dialog.CheckOkDialog;
 
 import org.greenrobot.eventbus.EventBus;
 
@@ -43,6 +49,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 public class MainActivity extends BaseActivity implements CompoundButton.OnCheckedChangeListener, OnRecyItemClickListener<Beds>, PopupWindow.OnDismissListener {
@@ -73,7 +80,13 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
     TextView toolbarTitleText;
     @BindView(R.id.toolbar_right_rl)
     RelativeLayout toolbarRightRl;
-    private Fragment mainFragment, optionFragment;
+    @BindView(R.id.h_line)
+    View hLine;
+    @BindView(R.id.frame_layout_f)
+    FrameLayout frameLayoutF;
+
+    private MainFragment mainFragment;
+    private OptionFragment optionFragment;
 
     private final String NOW_MAIN_FRAGMENT_POS = "NOW_MAIN_FRAGMENT_POS";
 
@@ -255,32 +268,6 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
 
     private long mExitTime; //退出时间
 
-    @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event) {
-        if (keyCode == KeyEvent.KEYCODE_BACK) {
-
-            if (popupWindow != null && popupWindow.isShowing()) {
-                popupWindow.dismiss();
-                return true;
-            }
-
-            if (nowPos == 1) {
-                chooseFragment(0, 1, null);
-                return true;
-            }
-
-
-            if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                UI.showToast(this, R.string.toast_app_exit_for_double);
-                mExitTime = System.currentTimeMillis();
-            } else {
-                finish();
-            }
-            return true;
-        }
-        return super.onKeyDown(keyCode, event);
-    }
-
 
     @OnClick({R.id.toolbar_left_logo, R.id.main_beds_left, R.id.main_beds_mid_layout, R.id.main_beds_right})
     public void onClick(View view) {
@@ -288,12 +275,21 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
             case R.id.toolbar_left_logo:
                 break;
             case R.id.main_beds_left:
+                UI.showCheckOkDialog(this);
                 break;
             case R.id.main_beds_mid_layout:
                 showPop();
                 break;
             case R.id.main_beds_right:
+                CheckDialog checkDialog = new CheckDialog(this, new String[]{"【基】0.9%氢氧化钠注射液", "【基】0.9%氢氧化钠注射液"});
+                checkDialog.setCanceledOnTouchOutside(false);
+                checkDialog.setOnSureClickListener(new CheckDialog.OnSureClickListener() {
+                    @Override
+                    public void onSureClick() {
 
+                    }
+                });
+                checkDialog.show();
                 break;
         }
     }
@@ -304,7 +300,6 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
             initPup();
             showPop();
         } else {
-            activityMain.setInterceptType(InterceptFrameLayout.INTERCEPT);
             popupWindow.showAtLocation(activityMain, Gravity.BOTTOM, 0, 0);
             pupShowMainBgAnim();
         }
@@ -360,11 +355,17 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         }
     }
 
-    /**
-     * pup消失的时候  bg变亮 并且设置activityMain不拦截点击事件
-     */
+
     @Override
     public void onDismiss() {
+        pupDismissMainAnim();
+    }
+
+
+    /**
+     * pup消失的时候  全屏bg变亮 并且设置activityMain不拦截点击事件
+     */
+    public void pupDismissMainAnim() {
         ValueAnimator valueAnimator = ValueAnimator.ofInt(178, 0);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -381,14 +382,14 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
                 activityMain.setInterceptType(InterceptFrameLayout.NOT_INTERCEPT);
             }
         });
-
         valueAnimator.setDuration(100).start();
     }
 
     /**
-     * pup显示的时候的动画显示  bg变暗 并且设置activityMain拦截点击事件防止外部点击
+     * pup显示的时候的动画显示  全屏bg变暗 并且设置activityMain拦截点击事件防止外部点击
      */
     public void pupShowMainBgAnim() {
+        activityMain.setInterceptType(InterceptFrameLayout.INTERCEPT);
         ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 178);
         valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
@@ -399,4 +400,81 @@ public class MainActivity extends BaseActivity implements CompoundButton.OnCheck
         });
         valueAnimator.setDuration(100).start();
     }
+
+
+    /**
+     * pup显示的时候的动画显示  fragment区域bg变暗 并且设置activityMain拦截点击事件防止外部点击
+     */
+    public void pupShowFragmentBgAnim() {
+        activityMain.setInterceptType(InterceptFrameLayout.INTERCEPT);
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(0, 178);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int alpha = (int) animation.getAnimatedValue();
+                frameLayoutF.setForeground(new ColorDrawable(Color.argb(alpha, 0, 0, 0)));
+            }
+        });
+        valueAnimator.setDuration(100).start();
+    }
+
+
+    /**
+     * pup消失的时候的动画显示  fragment区域bg变亮 并且设置activityMain拦截点击事件防止外部点击
+     */
+    public void pupDismissFragmentBgAnim() {
+        ValueAnimator valueAnimator = ValueAnimator.ofInt(178, 0);
+        valueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animation) {
+                int alpha = (int) animation.getAnimatedValue();
+                frameLayoutF.setForeground(new ColorDrawable(Color.argb(alpha, 0, 0, 0)));
+            }
+        });
+
+        valueAnimator.addListener(new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animator animation) {
+                super.onAnimationEnd(animation);
+                //消失的时候父布局不拦截点击事件
+                activityMain.setInterceptType(InterceptFrameLayout.NOT_INTERCEPT);
+            }
+        });
+        valueAnimator.setDuration(100).start();
+    }
+
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
+        if (keyCode == KeyEvent.KEYCODE_BACK) {
+
+            //option的pup显示的时候消失
+            if (optionFragment != null && optionFragment.getPopupWindow() != null && optionFragment.getPopupWindow().isShowing()) {
+                optionFragment.getPopupWindow().dismiss();
+                return true;
+            }
+
+            //主页面的pup显示的时候消失
+            if (popupWindow != null && popupWindow.isShowing()) {
+                popupWindow.dismiss();
+                return true;
+            }
+
+            //返回到主页面
+            if (nowPos == 1) {
+                chooseFragment(0, 1, null);
+                return true;
+            }
+
+            if ((System.currentTimeMillis() - mExitTime) > 2000) {
+                UI.showToast(this, R.string.toast_app_exit_for_double);
+                mExitTime = System.currentTimeMillis();
+            } else {
+                finish();
+            }
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
+    }
+
 }

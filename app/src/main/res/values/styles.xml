@@ -40,15 +40,27 @@
     </style>
 
 
-    <style name="dialog_loading" parent="BaseDialog">
+    <style name="dialog_check_ok" parent="BaseDialog">
         <item name="android:backgroundDimAmount">0.6</item>
         <!-- 灰度 -->
-        <item name="android:windowAnimationStyle">@style/LoadAnimation</item>
+        <item name="android:windowAnimationStyle">@style/CheckoKAnimation</item>
         <!-- 弹出或者进入时的动画效果 -->
     </style>
 
 
-    <style name="LoadAnimation" parent="android:Animation">
+    <style name="dialog_check_fail" parent="BaseDialog">
+        <item name="android:backgroundDimAmount">0.6</item>
+        <!-- 灰度 -->
+        <item name="android:windowAnimationStyle">@style/CheckoKAnimation</item>
+        <!-- 弹出或者进入时的动画效果 -->
+        <item name="android:windowBackground">@android:color/transparent</item>
+        <!--背景透明-->
+        <item name="android:backgroundDimEnabled">true</item>
+        <!--背景模糊-->
+    </style>
+
+
+    <style name="CheckoKAnimation" parent="android:Animation">
         <item name="android:windowEnterAnimation">@anim/dialog_load_enter</item>
         <item name="android:windowExitAnimation">@anim/dialog_load_exit</item>
     </style>
